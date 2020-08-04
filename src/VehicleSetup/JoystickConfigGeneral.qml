@@ -204,6 +204,7 @@ Item {
                             rollAxis.axisValue      = roll  * 32768.0
                             pitchAxis.axisValue     = pitch * 32768.0
                             yawAxis.axisValue       = yaw   * 32768.0
+                            _activeJoystick.negativeThrust = activeVehicle.supportsNegativeThrust
                             throttleAxis.axisValue  = _activeJoystick.negativeThrust ? throttle * -32768.0 : (-2 * throttle + 1) * 32768.0
                         }
                     }
