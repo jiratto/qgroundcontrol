@@ -15,4 +15,5 @@ SOURCES
     SignalStrength.qml
     TelemetryRSSIIndicator.qml
     VTOLModeIndicator.qml
+    MavlinkIndicator.qml
 )
