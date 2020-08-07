@@ -81,17 +81,10 @@ Item {
         anchors.left:           mavlinkIcon.right
 
         QGCLabel {
-            anchors.horizontalCenter:   mavlinkLossValue.horizontalCenter
-            visible:                    activeVehicle && !isNaN(activeVehicle.mavlinkReceivedCount)
-            color:                      qgcPal.buttonText
-            text:                       activeVehicle ? (activeVehicle.mavlinkReceivedCount * 0.001).toFixed(1) + 'k' : ""
-        }
-
-        QGCLabel {
             id:         mavlinkLossValue
             visible:    activeVehicle && !isNaN(activeVehicle.mavlinkLossCount)
             color:      qgcPal.buttonText
-            text:       activeVehicle ? activeVehicle.mavlinkLossPercent.toFixed(0) + '%' : ""
+            text:       activeVehicle ? (100.0 - activeVehicle.mavlinkLossPercent.toFixed(0)) + '%' : ""
         }
     }
 
