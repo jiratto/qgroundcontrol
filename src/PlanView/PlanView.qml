@@ -559,6 +559,28 @@ Item {
                     border.width:   object.lineWidth
                 }
             }
+
+            // Add trajectory lines to the map
+            MapPolyline {
+                id:         trajectoryPolyline
+                line.width: 3
+                line.color: "green"
+                z:          QGroundControl.zOrderTrajectoryLines
+                visible:    mainIsMap
+
+                Connections {
+                    target:                 activeVehicle ? activeVehicle.trajectoryPoints : null
+                    onPointAdded:           trajectoryPolyline.addCoordinate(coordinate)
+                    onUpdateLastPoint:
+                    {
+                        if (trajectoryPolyline.pathLength() < 2) {
+                            trajectoryPolyline.addCoordinate(coordinate)
+                        } else {
+                            trajectoryPolyline.replaceCoordinate(trajectoryPolyline.pathLength() - 1, coordinate)
+                        }
+                    }
+                }
+            }
         }
 
         //-----------------------------------------------------------
@@ -580,6 +602,7 @@ Item {
             readonly property int patternButtonIndex:   4
             readonly property int landButtonIndex:      5
             readonly property int centerButtonIndex:    6
+            readonly property int clearPathButtonIndex: 7
 
             property bool _isRallyLayer:    _editingLayer == _layerRallyPoints
             property bool _isMissionLayer:  _editingLayer == _layerMission
@@ -640,6 +663,12 @@ Item {
                     buttonEnabled:      true,
                     buttonVisible:      true,
                     dropPanelComponent: centerMapDropPanel
+                },
+                {
+                    name:               qsTr("ClearPath"),
+                    iconSource:         "/qmlimages/FollowComponentIcon.png",
+                    buttonEnabled:      true,
+                    buttonVisible:      true,
                 }
             ]
 
@@ -689,6 +718,9 @@ Item {
                     allAddClickBoolsOff()
                     insertLandItemAfterCurrent()
                     break
+                case clearPathButtonIndex:
+                    trajectoryPolyline.path = []
+                    break;
                 }
             }
 
