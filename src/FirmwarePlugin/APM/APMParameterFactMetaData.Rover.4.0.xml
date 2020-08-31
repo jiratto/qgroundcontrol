@@ -3877,6 +3877,7 @@
 <value code="14">MAV</value>
 <value code="15">NOVA</value>
 <value code="16">HemisphereNMEA</value>
+<value code="17">NMEA_EXT</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
