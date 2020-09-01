@@ -847,6 +847,9 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_OBSTACLE_DISTANCE:
         _handleObstacleDistance(message);
         break;
+    case MAVLINK_MSG_ID_WEATHER_INFO:
+        _handleWeatherInfo(message);
+        break;
 
     case MAVLINK_MSG_ID_SERIAL_CONTROL:
     {
@@ -4284,6 +4287,18 @@ void Vehicle::_handleObstacleDistance(const mavlink_message_t& message)
       mavlink_obstacle_distance_t o;
       mavlink_msg_obstacle_distance_decode(&message, &o);
       _objectAvoidance->update(&o);
+}
+
+void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
+{
+//    int32_t heading_mag; /*<  TODO*/
+//    int32_t deviation_mag; /*<  TODO*/
+//    int32_t variation_mag; /*<  TODO*/
+//    int32_t heading_north; /*<  TODO*/
+
+    mavlink_weather_info_t o;
+    mavlink_msg_weather_info_decode(&message, &o);
+    qDebug() << o.wind_ang_bow << "," << o.wind_ang_mag << "," << o.wind_spd_rel << "," << o.wind_spd_the;
 }
 
 void Vehicle::updateFlightDistance(double distance)
