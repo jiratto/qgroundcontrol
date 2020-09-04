@@ -10161,6 +10161,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10205,6 +10206,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10249,6 +10251,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10293,6 +10296,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10337,6 +10341,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10381,6 +10386,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10478,6 +10484,7 @@
 <value code=" 21">WindVane</value>
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
+<value code=" 24">AIS</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
