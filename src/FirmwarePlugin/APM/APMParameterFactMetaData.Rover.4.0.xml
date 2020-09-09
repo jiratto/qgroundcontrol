@@ -10162,6 +10162,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10207,6 +10208,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10252,6 +10254,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10297,6 +10300,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10342,6 +10346,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10387,6 +10392,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -10485,6 +10491,7 @@
 <value code=" 22">SLCAN</value>
 <value code=" 23">RCIN</value>
 <value code=" 24">AIS</value>
+<value code=" 25">WaterSpeed</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
