@@ -7,3 +7,6 @@
 [submodule "libs/gst-plugins-good"]
 	path = libs/gst-plugins-good
 	url = https://github.com/mavlink/gst-plugins-good.git
+[submodule "libs/mavlink/include/mavlink/v2.0"]
+	path = libs/mavlink/include/mavlink/v2.0
+	url = https://github.com/jiratto/c_library_v2.git
