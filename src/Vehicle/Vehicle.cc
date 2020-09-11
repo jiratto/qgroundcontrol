@@ -4291,14 +4291,9 @@ void Vehicle::_handleObstacleDistance(const mavlink_message_t& message)
 
 void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
 {
-//    int32_t heading_mag; /*<  TODO*/
-//    int32_t deviation_mag; /*<  TODO*/
-//    int32_t variation_mag; /*<  TODO*/
-//    int32_t heading_north; /*<  TODO*/
-
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
-    qDebug() << o.wind_ang_bow << "," << o.wind_ang_mag << "," << o.wind_spd_rel << "," << o.wind_spd_the;
+    qDebug() << o.wind_angle << "," << o.wind_speed_true << "," << o.wind_speed_relative;
 }
 
 void Vehicle::updateFlightDistance(double distance)
