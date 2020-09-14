@@ -13382,5 +13382,13 @@
 <field name="Units">Hz</field>
 <field name="UnitText">hertz</field>
 </param>
+<param humanName="AIS recever type" name="AIS_TYPE" documentation='0:None,1:NMEA AIVDM message' user="Standard">
+</param>
+<param humanName="AIS vessel list size" name="AIS_LIST_MAX" documentation='AIS list size of nearest vessels. Longer lists take longer to refresh with lower SRx_ADSB values.' user="Standard">
+</param>
+<param humanName="AIS vessel time out" name="AIS_TIME_OUT" documentation='if no updates are received in this time a vessel will be removed from the list' user="Standard">
+</param>
+<param humanName="Bitmask of AIS options" name="AIS_OPTIONS" documentation='0:Log all AIVDM messages,1:Log only unsupported AIVDM messages,2:Log decoded messages' user="Standard">
+</param>
 </parameters>
 </libraries></paramfile>
