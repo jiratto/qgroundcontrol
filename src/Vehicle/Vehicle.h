@@ -1315,7 +1315,9 @@ private:
     void _handleMessageInterval         (const mavlink_message_t& message);
     void _handleGimbalOrientation       (const mavlink_message_t& message);
     void _handleObstacleDistance        (const mavlink_message_t& message);
+    void _handleGpsGlobalOrigin         (const mavlink_message_t& message);
     void _handleWeatherInfo             (const mavlink_message_t& message);
+    void _handleAisVessel               (const mavlink_message_t& message);
     // ArduPilot dialect messages
 #if !defined(NO_ARDUPILOT_DIALECT)
     void _handleCameraFeedback          (const mavlink_message_t& message);

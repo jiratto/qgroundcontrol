@@ -190,6 +190,8 @@
         <file alias="ZoomMinus.svg">src/FlightMap/Images/ZoomMinus.svg</file>
         <file alias="ZoomPlus.svg">src/FlightMap/Images/ZoomPlus.svg</file>
         <file alias="Mavlink.png">src/ui/toolbar/Images/Mavlink.png</file>
+        <file alias="aisAlertVehicle.png">src/FlightMap/Images/aisAlertVehicle.png</file>
+        <file alias="aisVehicle.png">src/FlightMap/Images/aisVehicle.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

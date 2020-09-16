@@ -847,8 +847,14 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_OBSTACLE_DISTANCE:
         _handleObstacleDistance(message);
         break;
+    case MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN:
+        _handleGpsGlobalOrigin(message);
+        break;
     case MAVLINK_MSG_ID_WEATHER_INFO:
         _handleWeatherInfo(message);
+        break;
+    case MAVLINK_MSG_ID_AIS_VESSEL:
+        _handleAisVessel(message);
         break;
 
     case MAVLINK_MSG_ID_SERIAL_CONTROL:
@@ -4289,11 +4295,88 @@ void Vehicle::_handleObstacleDistance(const mavlink_message_t& message)
       _objectAvoidance->update(&o);
 }
 
+void Vehicle::_handleGpsGlobalOrigin(const mavlink_message_t& message)
+{
+    mavlink_gps_global_origin_t o;
+    mavlink_msg_gps_global_origin_decode(&message, &o);
+    qDebug() << "lat:" << (o.latitude * 1e-7) << "lon:" << (o.longitude * 1e-7);
+}
+
 void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
 {
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
-    qDebug() << o.wind_angle << "," << o.wind_speed_true << "," << o.wind_speed_relative;
+    // TODO
+}
+
+void Vehicle::_handleAisVessel(const mavlink_message_t& message)
+{
+    mavlink_ais_vessel_t o;
+    mavlink_msg_ais_vessel_decode(&message, &o);
+
+    o.lat = 137382999;
+    o.lon = 1005301999;
+
+    ADSBVehicle::VehicleInfo_t vehicleInfo;
+    vehicleInfo.availableFlags = 0;
+    vehicleInfo.icaoAddress = o.MMSI;
+
+    vehicleInfo.location.setLatitude(o.lat / 1e7);
+    vehicleInfo.location.setLongitude(o.lon / 1e7);
+    vehicleInfo.availableFlags |= ADSBVehicle::LocationAvailable;
+
+    vehicleInfo.heading = 45;
+    vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
+
+    _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
+
+//    uint32_t MMSI; /*<  Mobile Marine Service Identifier, 9 decimal digits*/
+//    int32_t lat; /*< [degE7] Latitude*/
+//    int32_t lon; /*< [degE7] Longitude*/
+//    uint16_t COG; /*< [cdeg] Course over ground*/
+//    uint16_t heading; /*< [cdeg] True heading*/
+//    uint16_t velocity; /*< [cm/s] Speed over ground*/
+//    uint16_t dimension_bow; /*< [m] Distance from lat/lon location to bow*/
+//    uint16_t dimension_stern; /*< [m] Distance from lat/lon location to stern*/
+//    uint16_t tslc; /*< [s] Time since last communication in seconds*/
+//    uint16_t flags; /*<  Bitmask to indicate various statuses including valid data fields*/
+//    int8_t turn_rate; /*< [cdeg/s] Turn rate*/
+//    uint8_t navigational_status; /*<  Navigational status*/
+//    uint8_t type; /*<  Type of vessels*/
+//    uint8_t dimension_port; /*< [m] Distance from lat/lon location to port side*/
+//    uint8_t dimension_starboard; /*< [m] Distance from lat/lon location to starboard side*/
+//    char callsign[7]; /*<  The vessel callsign*/
+//    char name[20]; /*<  The vessel name*/
+
+//    mavlink_adsb_vehicle_t adsbVehicleMsg;
+//    static const int maxTimeSinceLastSeen = 15;
+
+//    mavlink_msg_adsb_vehicle_decode(&message, &adsbVehicleMsg);
+//    if (adsbVehicleMsg.flags | ADSB_FLAGS_VALID_COORDS && adsbVehicleMsg.tslc <= maxTimeSinceLastSeen) {
+//        ADSBVehicle::VehicleInfo_t vehicleInfo;
+
+//        vehicleInfo.availableFlags = 0;
+//        vehicleInfo.icaoAddress = adsbVehicleMsg.ICAO_address;
+
+//        vehicleInfo.location.setLatitude(adsbVehicleMsg.lat / 1e7);
+//        vehicleInfo.location.setLongitude(adsbVehicleMsg.lon / 1e7);
+//        vehicleInfo.availableFlags |= ADSBVehicle::LocationAvailable;
+
+//        vehicleInfo.callsign = adsbVehicleMsg.callsign;
+//        vehicleInfo.availableFlags |= ADSBVehicle::CallsignAvailable;
+
+//        if (adsbVehicleMsg.flags & ADSB_FLAGS_VALID_ALTITUDE) {
+//            vehicleInfo.altitude = (double)adsbVehicleMsg.altitude / 1e3;
+//            vehicleInfo.availableFlags |= ADSBVehicle::AltitudeAvailable;
+//        }
+
+//        if (adsbVehicleMsg.flags & ADSB_FLAGS_VALID_HEADING) {
+//            vehicleInfo.heading = (double)adsbVehicleMsg.heading / 100.0;
+//            vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
+//        }
+
+//        _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
+//    }
 }
 
 void Vehicle::updateFlightDistance(double distance)

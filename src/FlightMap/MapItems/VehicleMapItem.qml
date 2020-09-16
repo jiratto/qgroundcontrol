@@ -62,7 +62,8 @@ MapQuickItem {
         }
         Image {
             id:                 vehicleIcon
-            source:             _adsbVehicle ? (alert ? "/qmlimages/AlertAircraft.svg" : "/qmlimages/AwarenessAircraft.svg") : vehicle.vehicleImageOpaque
+            //source:             _adsbVehicle ? (alert ? "/qmlimages/AlertAircraft.svg" : "/qmlimages/AwarenessAircraft.svg") : vehicle.vehicleImageOpaque
+            source:             _adsbVehicle ? (alert ? "/qmlimages/aisAlertVehicle.png" : "/qmlimages/aisVehicle.png") : vehicle.vehicleImageOpaque
             mipmap:             true
             width:              size
             sourceSize.width:   size
