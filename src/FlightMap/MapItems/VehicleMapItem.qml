@@ -43,23 +43,23 @@ MapQuickItem {
         height:     vehicleIcon.height
         opacity:    vehicle ? (vehicle.active ? 1.0 : 0.5) : 1.0
 
-        Rectangle {
-            id:                 vehicleShadow
-            anchors.fill:       vehicleIcon
-            color:              Qt.rgba(1,1,1,1)
-            radius:             width * 0.5
-            visible:            false
-        }
-        DropShadow {
-            anchors.fill:       vehicleShadow
-            visible:            vehicleIcon.visible && _adsbVehicle
-            horizontalOffset:   4
-            verticalOffset:     4
-            radius:             32.0
-            samples:            65
-            color:              Qt.rgba(0.94,0.91,0,0.5)
-            source:             vehicleShadow
-        }
+//        Rectangle {
+//            id:                 vehicleShadow
+//            anchors.fill:       vehicleIcon
+//            color:              Qt.rgba(1,1,1,1)
+//            radius:             width * 0.5
+//            visible:            false
+//        }
+//        DropShadow {
+//            anchors.fill:       vehicleShadow
+//            visible:            vehicleIcon.visible && _adsbVehicle
+//            horizontalOffset:   4
+//            verticalOffset:     4
+//            radius:             32.0
+//            samples:            65
+//            color:              Qt.rgba(0.94,0.91,0,0.5)
+//            source:             vehicleShadow
+//        }
         Image {
             id:                 vehicleIcon
             //source:             _adsbVehicle ? (alert ? "/qmlimages/AlertAircraft.svg" : "/qmlimages/AwarenessAircraft.svg") : vehicle.vehicleImageOpaque

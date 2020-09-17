@@ -86,6 +86,7 @@ const char* Vehicle::_gpsFactGroupName =                "gps";
 const char* Vehicle::_battery1FactGroupName =           "battery";
 const char* Vehicle::_battery2FactGroupName =           "battery2";
 const char* Vehicle::_windFactGroupName =               "wind";
+const char* Vehicle::_weatherFactGroupName =            "weather";
 const char* Vehicle::_vibrationFactGroupName =          "vibration";
 const char* Vehicle::_temperatureFactGroupName =        "temperature";
 const char* Vehicle::_clockFactGroupName =              "clock";
@@ -213,6 +214,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
+    , _weatherFactGroup(this)
     , _vibrationFactGroup(this)
     , _temperatureFactGroup(this)
     , _clockFactGroup(this)
@@ -413,6 +415,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
+    , _weatherFactGroup(this)
     , _vibrationFactGroup(this)
     , _clockFactGroup(this)
     , _distanceSensorFactGroup(this)
@@ -495,11 +498,12 @@ void Vehicle::_commonInit()
     _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
     _addFactGroup(&_battery1FactGroup,          _battery1FactGroupName);
     _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
-    _addFactGroup(&_windFactGroup,              _windFactGroupName);
-    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
-    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
-    _addFactGroup(&_clockFactGroup,             _clockFactGroupName);
-    _addFactGroup(&_distanceSensorFactGroup,    _distanceSensorFactGroupName);
+//    _addFactGroup(&_windFactGroup,              _windFactGroupName);
+    _addFactGroup(&_weatherFactGroup,           _weatherFactGroupName);
+//    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
+//    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
+//    _addFactGroup(&_clockFactGroup,             _clockFactGroupName);
+//    _addFactGroup(&_distanceSensorFactGroup,    _distanceSensorFactGroupName);
     _addFactGroup(&_estimatorStatusFactGroup,   _estimatorStatusFactGroupName);
 
     // Add firmware-specific fact groups, if provided
@@ -4306,7 +4310,11 @@ void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
 {
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
-    // TODO
+
+    _weatherFactGroup.wind_angle_true()->setRawValue(o.wind_angle_true);
+    _weatherFactGroup.wind_angle_relative()->setRawValue(o.wind_angle_relative);
+    _weatherFactGroup.wind_speed_true()->setRawValue(o.wind_speed_true);
+    _weatherFactGroup.wind_speed_relative()->setRawValue(o.wind_speed_relative);
 }
 
 void Vehicle::_handleAisVessel(const mavlink_message_t& message)
@@ -4329,54 +4337,6 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
 
     _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
-
-//    uint32_t MMSI; /*<  Mobile Marine Service Identifier, 9 decimal digits*/
-//    int32_t lat; /*< [degE7] Latitude*/
-//    int32_t lon; /*< [degE7] Longitude*/
-//    uint16_t COG; /*< [cdeg] Course over ground*/
-//    uint16_t heading; /*< [cdeg] True heading*/
-//    uint16_t velocity; /*< [cm/s] Speed over ground*/
-//    uint16_t dimension_bow; /*< [m] Distance from lat/lon location to bow*/
-//    uint16_t dimension_stern; /*< [m] Distance from lat/lon location to stern*/
-//    uint16_t tslc; /*< [s] Time since last communication in seconds*/
-//    uint16_t flags; /*<  Bitmask to indicate various statuses including valid data fields*/
-//    int8_t turn_rate; /*< [cdeg/s] Turn rate*/
-//    uint8_t navigational_status; /*<  Navigational status*/
-//    uint8_t type; /*<  Type of vessels*/
-//    uint8_t dimension_port; /*< [m] Distance from lat/lon location to port side*/
-//    uint8_t dimension_starboard; /*< [m] Distance from lat/lon location to starboard side*/
-//    char callsign[7]; /*<  The vessel callsign*/
-//    char name[20]; /*<  The vessel name*/
-
-//    mavlink_adsb_vehicle_t adsbVehicleMsg;
-//    static const int maxTimeSinceLastSeen = 15;
-
-//    mavlink_msg_adsb_vehicle_decode(&message, &adsbVehicleMsg);
-//    if (adsbVehicleMsg.flags | ADSB_FLAGS_VALID_COORDS && adsbVehicleMsg.tslc <= maxTimeSinceLastSeen) {
-//        ADSBVehicle::VehicleInfo_t vehicleInfo;
-
-//        vehicleInfo.availableFlags = 0;
-//        vehicleInfo.icaoAddress = adsbVehicleMsg.ICAO_address;
-
-//        vehicleInfo.location.setLatitude(adsbVehicleMsg.lat / 1e7);
-//        vehicleInfo.location.setLongitude(adsbVehicleMsg.lon / 1e7);
-//        vehicleInfo.availableFlags |= ADSBVehicle::LocationAvailable;
-
-//        vehicleInfo.callsign = adsbVehicleMsg.callsign;
-//        vehicleInfo.availableFlags |= ADSBVehicle::CallsignAvailable;
-
-//        if (adsbVehicleMsg.flags & ADSB_FLAGS_VALID_ALTITUDE) {
-//            vehicleInfo.altitude = (double)adsbVehicleMsg.altitude / 1e3;
-//            vehicleInfo.availableFlags |= ADSBVehicle::AltitudeAvailable;
-//        }
-
-//        if (adsbVehicleMsg.flags & ADSB_FLAGS_VALID_HEADING) {
-//            vehicleInfo.heading = (double)adsbVehicleMsg.heading / 100.0;
-//            vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
-//        }
-
-//        _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
-//    }
 }
 
 void Vehicle::updateFlightDistance(double distance)
@@ -4447,6 +4407,62 @@ VehicleWindFactGroup::VehicleWindFactGroup(QObject* parent)
     _directionFact.setRawValue      (std::numeric_limits<float>::quiet_NaN());
     _speedFact.setRawValue          (std::numeric_limits<float>::quiet_NaN());
     _verticalSpeedFact.setRawValue  (std::numeric_limits<float>::quiet_NaN());
+}
+
+const char* VehicleWeatherFactGroup::_windAngleTrueFactName         = "windAngleTrue";
+const char* VehicleWeatherFactGroup::_windAngleRelativeFactName     = "windAngleRelative";
+const char* VehicleWeatherFactGroup::_windSpeedTrueFactName         = "windSpeedTrue";
+const char* VehicleWeatherFactGroup::_windSpeedRelativeFactName     = "windSpeedRelative";
+const char* VehicleWeatherFactGroup::_airPressureBarFactName        = "airPressure";
+const char* VehicleWeatherFactGroup::_airTemperatureFactName        = "airTemperature";
+const char* VehicleWeatherFactGroup::_airRelativeHumidityFactName   = "airHumidity";
+const char* VehicleWeatherFactGroup::_waterDepthFactName            = "waterDepth";
+const char* VehicleWeatherFactGroup::_waterTemperatureFactName      = "waterTemperature";
+const char* VehicleWeatherFactGroup::_waterSpeedFactName            = "waterSpeed";
+const char* VehicleWeatherFactGroup::_milesTotalFactName            = "milesTotal";
+const char* VehicleWeatherFactGroup::_milesSinceResetFactName       = "milesSinceReset";
+
+VehicleWeatherFactGroup::VehicleWeatherFactGroup(QObject* parent)
+    : FactGroup(1000, ":/json/Vehicle/WeatherFact.json", parent)
+    , _windAngleTrueFact            (0, _windAngleTrueFactName,         FactMetaData::valueTypeDouble)
+    , _windAngleRelativeFact        (0, _windAngleRelativeFactName,     FactMetaData::valueTypeDouble)
+    , _windSpeedTrueFact            (0, _windSpeedTrueFactName,         FactMetaData::valueTypeDouble)
+    , _windSpeedRelativeFact        (0, _windSpeedRelativeFactName,     FactMetaData::valueTypeDouble)
+    , _airPressureBarFact           (0, _airPressureBarFactName,        FactMetaData::valueTypeDouble)
+    , _airTemperatureFact           (0, _airTemperatureFactName,        FactMetaData::valueTypeDouble)
+    , _airRelativeHumidityFact      (0, _airRelativeHumidityFactName,   FactMetaData::valueTypeDouble)
+    , _waterDepthFact               (0, _waterDepthFactName,            FactMetaData::valueTypeDouble)
+    , _waterTemperatureFact         (0, _waterTemperatureFactName,      FactMetaData::valueTypeDouble)
+    , _waterSpeedFact               (0, _waterSpeedFactName,            FactMetaData::valueTypeDouble)
+    , _milesTotalFact               (0, _milesTotalFactName,            FactMetaData::valueTypeDouble)
+    , _milesSinceResetFact          (0, _milesSinceResetFactName,       FactMetaData::valueTypeDouble)
+{
+    _addFact(&_windAngleTrueFact,       _windAngleTrueFactName);
+    _addFact(&_windAngleRelativeFact,   _windAngleRelativeFactName);
+    _addFact(&_windSpeedTrueFact,       _windSpeedTrueFactName);
+    _addFact(&_windSpeedRelativeFact,   _windSpeedRelativeFactName);
+    _addFact(&_airPressureBarFact,      _airPressureBarFactName);
+    _addFact(&_airTemperatureFact,      _airTemperatureFactName);
+    _addFact(&_airRelativeHumidityFact, _airRelativeHumidityFactName);
+    _addFact(&_waterDepthFact,          _waterDepthFactName);
+    _addFact(&_waterTemperatureFact,    _waterTemperatureFactName);
+    _addFact(&_waterSpeedFact,          _waterSpeedFactName);
+    _addFact(&_milesTotalFact,          _milesTotalFactName);
+    _addFact(&_milesSinceResetFact,     _milesSinceResetFactName);
+
+    // Start out as not available "--.--"
+    _windAngleTrueFact.setRawValue          (std::numeric_limits<float>::quiet_NaN());
+    _windAngleRelativeFact.setRawValue      (std::numeric_limits<float>::quiet_NaN());
+    _windSpeedTrueFact.setRawValue          (std::numeric_limits<float>::quiet_NaN());
+    _windSpeedRelativeFact.setRawValue      (std::numeric_limits<float>::quiet_NaN());
+    _airPressureBarFact.setRawValue         (std::numeric_limits<float>::quiet_NaN());
+    _airTemperatureFact.setRawValue         (std::numeric_limits<float>::quiet_NaN());
+    _airRelativeHumidityFact.setRawValue    (std::numeric_limits<float>::quiet_NaN());
+    _waterDepthFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
+    _waterTemperatureFact.setRawValue       (std::numeric_limits<float>::quiet_NaN());
+    _waterSpeedFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
+    _milesTotalFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
+    _milesSinceResetFact.setRawValue        (std::numeric_limits<float>::quiet_NaN());
 }
 
 const char* VehicleVibrationFactGroup::_xAxisFactName =      "xAxis";

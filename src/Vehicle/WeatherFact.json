@@ -1,0 +1,86 @@
+[
+{
+    "name":             "windAngleTrue",
+    "shortDescription": "Wind Angle True",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "deg"
+},
+{
+    "name":             "windAngleRelative",
+    "shortDescription": "Wind Angle Relative",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "deg"
+},
+{
+    "name":             "windSpeedTrue",
+    "shortDescription": "Wind Speed True",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "m/s"
+},
+{
+    "name":             "windSpeedRelative",
+    "shortDescription": "Wind Speed Relative",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "m/s"
+},
+{
+    "name":             "airPressure",
+    "shortDescription": "Air Pressure",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "bars"
+},
+{
+    "name":             "airTemperature",
+    "shortDescription": "Air Temperature",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "degC"
+},
+{
+    "name":             "airHumidity",
+    "shortDescription": "Air Humidity",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "%"
+},
+{
+    "name":             "waterDepth",
+    "shortDescription": "Water Depth",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "m"
+},
+{
+    "name":             "waterTemperature",
+    "shortDescription": "Water Temperature",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "m"
+},
+{
+    "name":             "waterSpeed",
+    "shortDescription": "Water Speed",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "kn"
+},
+{
+    "name":             "milesTotal",
+    "shortDescription": "Total Miles",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "nmi"
+},
+{
+    "name":             "milesSinceReset",
+    "shortDescription": "Miles Since Reset",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "nmi"
+}
+]

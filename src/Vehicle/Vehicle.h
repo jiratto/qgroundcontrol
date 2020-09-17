@@ -200,6 +200,67 @@ private:
     Fact        _verticalSpeedFact;
 };
 
+class VehicleWeatherFactGroup : public FactGroup
+{
+    Q_OBJECT
+
+public:
+    VehicleWeatherFactGroup(QObject* parent = nullptr);
+
+    Q_PROPERTY(Fact* wind_angle_true        READ wind_angle_true        CONSTANT)
+    Q_PROPERTY(Fact* wind_angle_relative    READ wind_angle_relative    CONSTANT)
+    Q_PROPERTY(Fact* wind_speed_true        READ wind_speed_true        CONSTANT)
+    Q_PROPERTY(Fact* wind_speed_relative    READ wind_speed_relative    CONSTANT)
+    Q_PROPERTY(Fact* air_pressure_bar       READ air_pressure_bar       CONSTANT)
+    Q_PROPERTY(Fact* air_temperature        READ air_temperature        CONSTANT)
+    Q_PROPERTY(Fact* air_relative_humidity  READ air_relative_humidity  CONSTANT)
+    Q_PROPERTY(Fact* water_depth            READ water_depth            CONSTANT)
+    Q_PROPERTY(Fact* water_temperature      READ water_temperature      CONSTANT)
+    Q_PROPERTY(Fact* water_speed            READ water_speed            CONSTANT)
+    Q_PROPERTY(Fact* miles_total            READ miles_total            CONSTANT)
+    Q_PROPERTY(Fact* miles_since_reset      READ miles_since_reset      CONSTANT)
+
+    Fact* wind_angle_true       () { return &_windAngleTrueFact; }
+    Fact* wind_angle_relative   () { return &_windAngleRelativeFact; }
+    Fact* wind_speed_true       () { return &_windSpeedTrueFact; }
+    Fact* wind_speed_relative   () { return &_windSpeedRelativeFact; }
+    Fact* air_pressure_bar      () { return &_airPressureBarFact; }
+    Fact* air_temperature       () { return &_airTemperatureFact; }
+    Fact* air_relative_humidity () { return &_airRelativeHumidityFact; }
+    Fact* water_depth           () { return &_waterDepthFact; }
+    Fact* water_temperature     () { return &_waterTemperatureFact; }
+    Fact* water_speed           () { return &_waterSpeedFact; }
+    Fact* miles_total           () { return &_milesTotalFact; }
+    Fact* miles_since_reset     () { return &_milesSinceResetFact; }
+
+    static const char* _windAngleTrueFactName;
+    static const char* _windAngleRelativeFactName;
+    static const char* _windSpeedTrueFactName;
+    static const char* _windSpeedRelativeFactName;
+    static const char* _airPressureBarFactName;
+    static const char* _airTemperatureFactName;
+    static const char* _airRelativeHumidityFactName;
+    static const char* _waterDepthFactName;
+    static const char* _waterTemperatureFactName;
+    static const char* _waterSpeedFactName;
+    static const char* _milesTotalFactName;
+    static const char* _milesSinceResetFactName;
+
+private:
+    Fact        _windAngleTrueFact;
+    Fact        _windAngleRelativeFact;
+    Fact        _windSpeedTrueFact;
+    Fact        _windSpeedRelativeFact;
+    Fact        _airPressureBarFact;
+    Fact        _airTemperatureFact;
+    Fact        _airRelativeHumidityFact;
+    Fact        _waterDepthFact;
+    Fact        _waterTemperatureFact;
+    Fact        _waterSpeedFact;
+    Fact        _milesTotalFact;
+    Fact        _milesSinceResetFact;
+};
+
 class VehicleGPSFactGroup : public FactGroup
 {
     Q_OBJECT
@@ -678,6 +739,7 @@ public:
     Q_PROPERTY(FactGroup* battery           READ battery1FactGroup          CONSTANT)
     Q_PROPERTY(FactGroup* battery2          READ battery2FactGroup          CONSTANT)
     Q_PROPERTY(FactGroup* wind              READ windFactGroup              CONSTANT)
+    Q_PROPERTY(FactGroup* weather           READ weatherFactGroup           CONSTANT)
     Q_PROPERTY(FactGroup* vibration         READ vibrationFactGroup         CONSTANT)
     Q_PROPERTY(FactGroup* temperature       READ temperatureFactGroup       CONSTANT)
     Q_PROPERTY(FactGroup* clock             READ clockFactGroup             CONSTANT)
@@ -991,6 +1053,7 @@ public:
     FactGroup* battery1FactGroup            () { return &_battery1FactGroup; }
     FactGroup* battery2FactGroup            () { return &_battery2FactGroup; }
     FactGroup* windFactGroup                () { return &_windFactGroup; }
+    FactGroup* weatherFactGroup             () { return &_weatherFactGroup; }
     FactGroup* vibrationFactGroup           () { return &_vibrationFactGroup; }
     FactGroup* temperatureFactGroup         () { return &_temperatureFactGroup; }
     FactGroup* clockFactGroup               () { return &_clockFactGroup; }
@@ -1575,6 +1638,7 @@ private:
     VehicleBatteryFactGroup         _battery1FactGroup;
     VehicleBatteryFactGroup         _battery2FactGroup;
     VehicleWindFactGroup            _windFactGroup;
+    VehicleWeatherFactGroup         _weatherFactGroup;
     VehicleVibrationFactGroup       _vibrationFactGroup;
     VehicleTemperatureFactGroup     _temperatureFactGroup;
     VehicleClockFactGroup           _clockFactGroup;
@@ -1606,6 +1670,7 @@ private:
     static const char* _battery1FactGroupName;
     static const char* _battery2FactGroupName;
     static const char* _windFactGroupName;
+    static const char* _weatherFactGroupName;
     static const char* _vibrationFactGroupName;
     static const char* _temperatureFactGroupName;
     static const char* _clockFactGroupName;
