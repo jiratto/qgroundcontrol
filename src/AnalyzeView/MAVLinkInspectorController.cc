@@ -734,6 +734,10 @@ MAVLinkInspectorController::MAVLinkInspectorController()
     _rangeSt.append(new Range_st(this, tr("Auto"),    0));
     _rangeSt.append(new Range_st(this, tr("10,000"),  10000));
     _rangeSt.append(new Range_st(this, tr("1,000"),   1000));
+    _rangeSt.append(new Range_st(this, tr("500"),     500));
+    _rangeSt.append(new Range_st(this, tr("400"),     400));
+    _rangeSt.append(new Range_st(this, tr("300"),     300));
+    _rangeSt.append(new Range_st(this, tr("200"),     200));
     _rangeSt.append(new Range_st(this, tr("100"),     100));
     _rangeSt.append(new Range_st(this, tr("10"),      10));
     _rangeSt.append(new Range_st(this, tr("1"),       1));

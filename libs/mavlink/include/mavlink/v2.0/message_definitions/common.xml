@@ -5796,6 +5796,12 @@
       <field type="uint16_t" name="rotation" units="deg">Video image rotation clockwise</field>
       <field type="uint16_t" name="hfov" units="deg">Horizontal Field of view</field>
     </message>
+    <message id="276" name="UAVH31_DATA">
+      <description>Send UAV-H31 data to GCS for debuging</description>
+      <field type="uint16_t" name="beam1" units="cm">beam1 target distance</field>
+      <field type="uint16_t" name="beam2" units="cm">beam2 target distance</field>
+      <field type="uint16_t" name="beam3" units="cm">beam3 target distance</field>
+    </message>
     <message id="299" name="WIFI_CONFIG_AP">
       <description>Configure AP SSID and Password.</description>
       <field type="char[32]" name="ssid">Name of Wi-Fi network (SSID). Leave it blank to leave it unchanged.</field>
