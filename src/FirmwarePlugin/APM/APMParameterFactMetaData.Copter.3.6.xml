@@ -2219,6 +2219,9 @@
 <values>
 <value code="0">Disabled</value>
 <value code="1">UAVCAN</value>
+<value code="2">KDECAN</value>
+<value code="3">ToshibaCAN</value>
+<value code="100">NanoradarCAN</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -2244,6 +2247,9 @@
 <values>
 <value code="0">Disabled</value>
 <value code="1">UAVCAN</value>
+<value code="2">KDECAN</value>
+<value code="3">ToshibaCAN</value>
+<value code="100">NanoradarCAN</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -5065,6 +5071,8 @@
 <value code="3">TeraRangerTower</value>
 <value code="4">RangeFinder</value>
 <value code="5">RPLidarA2</value>
+<value code="6">TRTOWEREVO</value>
+<value code="7">MR72</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
