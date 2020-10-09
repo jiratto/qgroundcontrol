@@ -733,6 +733,10 @@ MAVLinkInspectorController::MAVLinkInspectorController()
     emit timeScalesChanged();
     _rangeSt.append(new Range_st(this, tr("Auto"),    0));
     _rangeSt.append(new Range_st(this, tr("10,000"),  10000));
+    _rangeSt.append(new Range_st(this, tr("5,000"),   5000));
+    _rangeSt.append(new Range_st(this, tr("4,000"),   4000));
+    _rangeSt.append(new Range_st(this, tr("3,000"),   3000));
+    _rangeSt.append(new Range_st(this, tr("2,000"),   2000));
     _rangeSt.append(new Range_st(this, tr("1,000"),   1000));
     _rangeSt.append(new Range_st(this, tr("500"),     500));
     _rangeSt.append(new Range_st(this, tr("400"),     400));

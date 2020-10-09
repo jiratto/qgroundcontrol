@@ -5073,6 +5073,7 @@
 <value code="5">RPLidarA2</value>
 <value code="6">TRTOWEREVO</value>
 <value code="7">MR72</value>
+<value code="100">NanoradarCAN</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
