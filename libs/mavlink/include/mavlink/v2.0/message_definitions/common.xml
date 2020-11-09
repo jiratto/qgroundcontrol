@@ -5799,6 +5799,7 @@
     <message id="276" name="PRX_DISTANCE">
       <description>Send Proximity Data to GCS</description>
       <field type="uint8_t" name="health"></field>
+      <field type="uint8_t" name="enable"></field>
       <field type="float" name="dist0"></field>
       <field type="float" name="dist45"></field>
       <field type="float" name="dist90"></field>

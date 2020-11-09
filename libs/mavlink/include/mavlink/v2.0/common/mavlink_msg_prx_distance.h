@@ -16,15 +16,16 @@ typedef struct __mavlink_prx_distance_t {
  float closest_angle; /*<  */
  float closest_dist; /*<  */
  uint8_t health; /*<  */
+ uint8_t enable; /*<  */
 }) mavlink_prx_distance_t;
 
-#define MAVLINK_MSG_ID_PRX_DISTANCE_LEN 41
-#define MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN 41
-#define MAVLINK_MSG_ID_276_LEN 41
-#define MAVLINK_MSG_ID_276_MIN_LEN 41
+#define MAVLINK_MSG_ID_PRX_DISTANCE_LEN 42
+#define MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN 42
+#define MAVLINK_MSG_ID_276_LEN 42
+#define MAVLINK_MSG_ID_276_MIN_LEN 42
 
-#define MAVLINK_MSG_ID_PRX_DISTANCE_CRC 137
-#define MAVLINK_MSG_ID_276_CRC 137
+#define MAVLINK_MSG_ID_PRX_DISTANCE_CRC 179
+#define MAVLINK_MSG_ID_276_CRC 179
 
 
 
@@ -32,8 +33,9 @@ typedef struct __mavlink_prx_distance_t {
 #define MAVLINK_MESSAGE_INFO_PRX_DISTANCE { \
     276, \
     "PRX_DISTANCE", \
-    11, \
+    12, \
     {  { "health", NULL, MAVLINK_TYPE_UINT8_T, 0, 40, offsetof(mavlink_prx_distance_t, health) }, \
+         { "enable", NULL, MAVLINK_TYPE_UINT8_T, 0, 41, offsetof(mavlink_prx_distance_t, enable) }, \
          { "dist0", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_prx_distance_t, dist0) }, \
          { "dist45", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_prx_distance_t, dist45) }, \
          { "dist90", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_prx_distance_t, dist90) }, \
@@ -49,8 +51,9 @@ typedef struct __mavlink_prx_distance_t {
 #else
 #define MAVLINK_MESSAGE_INFO_PRX_DISTANCE { \
     "PRX_DISTANCE", \
-    11, \
+    12, \
     {  { "health", NULL, MAVLINK_TYPE_UINT8_T, 0, 40, offsetof(mavlink_prx_distance_t, health) }, \
+         { "enable", NULL, MAVLINK_TYPE_UINT8_T, 0, 41, offsetof(mavlink_prx_distance_t, enable) }, \
          { "dist0", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_prx_distance_t, dist0) }, \
          { "dist45", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_prx_distance_t, dist45) }, \
          { "dist90", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_prx_distance_t, dist90) }, \
@@ -72,6 +75,7 @@ typedef struct __mavlink_prx_distance_t {
  * @param msg The MAVLink message to compress the data into
  *
  * @param health  
+ * @param enable  
  * @param dist0  
  * @param dist45  
  * @param dist90  
@@ -85,7 +89,7 @@ typedef struct __mavlink_prx_distance_t {
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_prx_distance_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t health, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
+                               uint8_t health, uint8_t enable, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_PRX_DISTANCE_LEN];
@@ -100,6 +104,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack(uint8_t system_id, uint8_t 
     _mav_put_float(buf, 32, closest_angle);
     _mav_put_float(buf, 36, closest_dist);
     _mav_put_uint8_t(buf, 40, health);
+    _mav_put_uint8_t(buf, 41, enable);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_PRX_DISTANCE_LEN);
 #else
@@ -115,6 +120,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack(uint8_t system_id, uint8_t 
     packet.closest_angle = closest_angle;
     packet.closest_dist = closest_dist;
     packet.health = health;
+    packet.enable = enable;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_PRX_DISTANCE_LEN);
 #endif
@@ -130,6 +136,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack(uint8_t system_id, uint8_t 
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param health  
+ * @param enable  
  * @param dist0  
  * @param dist45  
  * @param dist90  
@@ -144,7 +151,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack(uint8_t system_id, uint8_t 
  */
 static inline uint16_t mavlink_msg_prx_distance_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t health,float dist0,float dist45,float dist90,float dist135,float dist180,float dist225,float dist270,float dist315,float closest_angle,float closest_dist)
+                                   uint8_t health,uint8_t enable,float dist0,float dist45,float dist90,float dist135,float dist180,float dist225,float dist270,float dist315,float closest_angle,float closest_dist)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_PRX_DISTANCE_LEN];
@@ -159,6 +166,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack_chan(uint8_t system_id, uin
     _mav_put_float(buf, 32, closest_angle);
     _mav_put_float(buf, 36, closest_dist);
     _mav_put_uint8_t(buf, 40, health);
+    _mav_put_uint8_t(buf, 41, enable);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_PRX_DISTANCE_LEN);
 #else
@@ -174,6 +182,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack_chan(uint8_t system_id, uin
     packet.closest_angle = closest_angle;
     packet.closest_dist = closest_dist;
     packet.health = health;
+    packet.enable = enable;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_PRX_DISTANCE_LEN);
 #endif
@@ -192,7 +201,7 @@ static inline uint16_t mavlink_msg_prx_distance_pack_chan(uint8_t system_id, uin
  */
 static inline uint16_t mavlink_msg_prx_distance_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_prx_distance_t* prx_distance)
 {
-    return mavlink_msg_prx_distance_pack(system_id, component_id, msg, prx_distance->health, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
+    return mavlink_msg_prx_distance_pack(system_id, component_id, msg, prx_distance->health, prx_distance->enable, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
 }
 
 /**
@@ -206,7 +215,7 @@ static inline uint16_t mavlink_msg_prx_distance_encode(uint8_t system_id, uint8_
  */
 static inline uint16_t mavlink_msg_prx_distance_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_prx_distance_t* prx_distance)
 {
-    return mavlink_msg_prx_distance_pack_chan(system_id, component_id, chan, msg, prx_distance->health, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
+    return mavlink_msg_prx_distance_pack_chan(system_id, component_id, chan, msg, prx_distance->health, prx_distance->enable, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
 }
 
 /**
@@ -214,6 +223,7 @@ static inline uint16_t mavlink_msg_prx_distance_encode_chan(uint8_t system_id, u
  * @param chan MAVLink channel to send the message
  *
  * @param health  
+ * @param enable  
  * @param dist0  
  * @param dist45  
  * @param dist90  
@@ -227,7 +237,7 @@ static inline uint16_t mavlink_msg_prx_distance_encode_chan(uint8_t system_id, u
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_prx_distance_send(mavlink_channel_t chan, uint8_t health, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
+static inline void mavlink_msg_prx_distance_send(mavlink_channel_t chan, uint8_t health, uint8_t enable, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_PRX_DISTANCE_LEN];
@@ -242,6 +252,7 @@ static inline void mavlink_msg_prx_distance_send(mavlink_channel_t chan, uint8_t
     _mav_put_float(buf, 32, closest_angle);
     _mav_put_float(buf, 36, closest_dist);
     _mav_put_uint8_t(buf, 40, health);
+    _mav_put_uint8_t(buf, 41, enable);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PRX_DISTANCE, buf, MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_CRC);
 #else
@@ -257,6 +268,7 @@ static inline void mavlink_msg_prx_distance_send(mavlink_channel_t chan, uint8_t
     packet.closest_angle = closest_angle;
     packet.closest_dist = closest_dist;
     packet.health = health;
+    packet.enable = enable;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PRX_DISTANCE, (const char *)&packet, MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_CRC);
 #endif
@@ -270,7 +282,7 @@ static inline void mavlink_msg_prx_distance_send(mavlink_channel_t chan, uint8_t
 static inline void mavlink_msg_prx_distance_send_struct(mavlink_channel_t chan, const mavlink_prx_distance_t* prx_distance)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_prx_distance_send(chan, prx_distance->health, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
+    mavlink_msg_prx_distance_send(chan, prx_distance->health, prx_distance->enable, prx_distance->dist0, prx_distance->dist45, prx_distance->dist90, prx_distance->dist135, prx_distance->dist180, prx_distance->dist225, prx_distance->dist270, prx_distance->dist315, prx_distance->closest_angle, prx_distance->closest_dist);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PRX_DISTANCE, (const char *)prx_distance, MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_CRC);
 #endif
@@ -284,7 +296,7 @@ static inline void mavlink_msg_prx_distance_send_struct(mavlink_channel_t chan, 
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_prx_distance_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t health, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
+static inline void mavlink_msg_prx_distance_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t health, uint8_t enable, float dist0, float dist45, float dist90, float dist135, float dist180, float dist225, float dist270, float dist315, float closest_angle, float closest_dist)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -299,6 +311,7 @@ static inline void mavlink_msg_prx_distance_send_buf(mavlink_message_t *msgbuf, 
     _mav_put_float(buf, 32, closest_angle);
     _mav_put_float(buf, 36, closest_dist);
     _mav_put_uint8_t(buf, 40, health);
+    _mav_put_uint8_t(buf, 41, enable);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PRX_DISTANCE, buf, MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_CRC);
 #else
@@ -314,6 +327,7 @@ static inline void mavlink_msg_prx_distance_send_buf(mavlink_message_t *msgbuf, 
     packet->closest_angle = closest_angle;
     packet->closest_dist = closest_dist;
     packet->health = health;
+    packet->enable = enable;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PRX_DISTANCE, (const char *)packet, MAVLINK_MSG_ID_PRX_DISTANCE_MIN_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_LEN, MAVLINK_MSG_ID_PRX_DISTANCE_CRC);
 #endif
@@ -333,6 +347,16 @@ static inline void mavlink_msg_prx_distance_send_buf(mavlink_message_t *msgbuf, 
 static inline uint8_t mavlink_msg_prx_distance_get_health(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_uint8_t(msg,  40);
+}
+
+/**
+ * @brief Get field enable from prx_distance message
+ *
+ * @return  
+ */
+static inline uint8_t mavlink_msg_prx_distance_get_enable(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  41);
 }
 
 /**
@@ -455,6 +479,7 @@ static inline void mavlink_msg_prx_distance_decode(const mavlink_message_t* msg,
     prx_distance->closest_angle = mavlink_msg_prx_distance_get_closest_angle(msg);
     prx_distance->closest_dist = mavlink_msg_prx_distance_get_closest_dist(msg);
     prx_distance->health = mavlink_msg_prx_distance_get_health(msg);
+    prx_distance->enable = mavlink_msg_prx_distance_get_enable(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_PRX_DISTANCE_LEN? msg->len : MAVLINK_MSG_ID_PRX_DISTANCE_LEN;
         memset(prx_distance, 0, MAVLINK_MSG_ID_PRX_DISTANCE_LEN);

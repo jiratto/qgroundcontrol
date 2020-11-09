@@ -9476,7 +9476,7 @@ static void mavlink_test_prx_distance(uint8_t system_id, uint8_t component_id, m
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_prx_distance_t packet_in = {
-        17.0,45.0,73.0,101.0,129.0,157.0,185.0,213.0,241.0,269.0,125
+        17.0,45.0,73.0,101.0,129.0,157.0,185.0,213.0,241.0,269.0,125,192
     };
     mavlink_prx_distance_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -9491,6 +9491,7 @@ static void mavlink_test_prx_distance(uint8_t system_id, uint8_t component_id, m
         packet1.closest_angle = packet_in.closest_angle;
         packet1.closest_dist = packet_in.closest_dist;
         packet1.health = packet_in.health;
+        packet1.enable = packet_in.enable;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -9505,12 +9506,12 @@ static void mavlink_test_prx_distance(uint8_t system_id, uint8_t component_id, m
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_prx_distance_pack(system_id, component_id, &msg , packet1.health , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
+    mavlink_msg_prx_distance_pack(system_id, component_id, &msg , packet1.health , packet1.enable , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
     mavlink_msg_prx_distance_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_prx_distance_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.health , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
+    mavlink_msg_prx_distance_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.health , packet1.enable , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
     mavlink_msg_prx_distance_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -9523,7 +9524,7 @@ static void mavlink_test_prx_distance(uint8_t system_id, uint8_t component_id, m
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_prx_distance_send(MAVLINK_COMM_1 , packet1.health , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
+    mavlink_msg_prx_distance_send(MAVLINK_COMM_1 , packet1.health , packet1.enable , packet1.dist0 , packet1.dist45 , packet1.dist90 , packet1.dist135 , packet1.dist180 , packet1.dist225 , packet1.dist270 , packet1.dist315 , packet1.closest_angle , packet1.closest_dist );
     mavlink_msg_prx_distance_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
