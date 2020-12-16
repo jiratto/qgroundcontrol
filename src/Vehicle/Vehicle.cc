@@ -3198,6 +3198,21 @@ void Vehicle::guidedModeROI(const QGeoCoordinate& centerCoord)
     }
 }
 
+void Vehicle::setRelayToggle(int id)
+{
+    sendMavCommand(
+        defaultComponentId(),
+        MAV_CMD_USER_1,
+        true,
+        static_cast<int>(id),
+        static_cast<float>(qQNaN()),
+        static_cast<float>(qQNaN()),
+        static_cast<float>(qQNaN()),
+        static_cast<float>(qQNaN()),
+        static_cast<float>(qQNaN()),
+        static_cast<float>(qQNaN()));
+}
+
 void Vehicle::stopGuidedModeROI()
 {
     if (!roiModeSupported()) {

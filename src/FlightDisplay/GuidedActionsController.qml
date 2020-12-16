@@ -52,6 +52,12 @@ Item {
     readonly property string gotoTitle:                     qsTr("Go To Location")
     readonly property string vtolTransitionTitle:           qsTr("VTOL Transition")
     readonly property string roiTitle:                      qsTr("ROI")
+    readonly property string relay1Title:                   qsTr("Relay1")
+    readonly property string relay2Title:                   qsTr("Relay2")
+    readonly property string relay3Title:                   qsTr("Relay3")
+    readonly property string relay4Title:                   qsTr("Relay4")
+    readonly property string relay5Title:                   qsTr("Relay5")
+    readonly property string relay6Title:                   qsTr("Relay6")
 
     readonly property string armMessage:                        qsTr("Arm the vehicle.")
     readonly property string disarmMessage:                     qsTr("Disarm the vehicle")
@@ -95,6 +101,12 @@ Item {
     readonly property int actionVtolTransitionToFwdFlight:  20
     readonly property int actionVtolTransitionToMRFlight:   21
     readonly property int actionROI:                        22
+    readonly property int actionRelay1:                     23
+    readonly property int actionRelay2:                     24
+    readonly property int actionRelay3:                     25
+    readonly property int actionRelay4:                     26
+    readonly property int actionRelay5:                     27
+    readonly property int actionRelay6:                     28
 
     property bool   _useChecklist:              QGroundControl.settingsManager.appSettings.useChecklist.rawValue && QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length
     property bool   _enforceChecklist:          _useChecklist && QGroundControl.settingsManager.appSettings.enforceChecklist.rawValue
@@ -390,6 +402,26 @@ Item {
             confirmDialog.message = roiMessage
             confirmDialog.hideTrigger = Qt.binding(function() { return !showROI })
             break;
+        case actionRelay1:
+            activeVehicle.setRelayToggle(0);
+            return
+        case actionRelay2:
+            activeVehicle.setRelayToggle(1);
+            return;
+        case actionRelay3:
+            activeVehicle.setRelayToggle(2);
+            return;
+        case actionRelay4:
+            activeVehicle.setRelayToggle(3);
+            return;
+        case actionRelay5:
+            activeVehicle.setRelayToggle(4);
+            return;
+        case actionRelay6:
+            confirmDialog.title = relay6Title
+            confirmDialog.message = relay6Title
+            confirmDialog.hideTrigger = true
+            break;
         default:
             console.warn("Unknown actionCode", actionCode)
             return
@@ -467,6 +499,9 @@ Item {
             break
         case actionROI:
             activeVehicle.guidedModeROI(actionData)
+            break
+        case actionRelay6:
+            activeVehicle.setRelayToggle(6);
             break
         default:
             console.warn(qsTr("Internal error: unknown actionCode"), actionCode)

@@ -609,21 +609,23 @@ Item {
                 {
                     name:               _guidedController.takeoffTitle,
                     iconSource:         "/res/takeoff.svg",
-                    buttonVisible:      _guidedController.showTakeoff || !_guidedController.showLand,
+                    //buttonVisible:      _guidedController.showTakeoff || !_guidedController.showLand,
+                    buttonVisible:      false,
                     buttonEnabled:      _guidedController.showTakeoff,
                     action:             _guidedController.actionTakeoff
                 },
                 {
                     name:               _guidedController.landTitle,
                     iconSource:         "/res/land.svg",
-                    buttonVisible:      _guidedController.showLand && !_guidedController.showTakeoff,
+                    //buttonVisible:      _guidedController.showLand && !_guidedController.showTakeoff,
+                    buttonVisible:      false,
                     buttonEnabled:      _guidedController.showLand,
                     action:             _guidedController.actionLand
                 },
                 {
                     name:               _guidedController.rtlTitle,
                     iconSource:         "/res/rtl.svg",
-                    buttonVisible:      true,
+                    buttonVisible:      false,
                     buttonEnabled:      _guidedController.showRTL,
                     action:             _guidedController.actionRTL
                 },
@@ -633,6 +635,48 @@ Item {
                     buttonVisible:      _guidedController.showPause,
                     buttonEnabled:      _guidedController.showPause,
                     action:             _guidedController.actionPause
+                },
+                {
+                    name:               _guidedController.relay1Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay1
+                },
+                {
+                    name:               _guidedController.relay2Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay2
+                },
+                {
+                    name:               _guidedController.relay3Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay3
+                },
+                {
+                    name:               _guidedController.relay4Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay4
+                },
+                {
+                    name:               _guidedController.relay5Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay5
+                },
+                {
+                    name:               _guidedController.relay6Title,
+                    iconSource:         "/res/action.svg",
+                    buttonVisible:      true,
+                    buttonEnabled:      true,
+                    action:             _guidedController.actionRelay6
                 },
                 {
                     name:               qsTr("Action"),

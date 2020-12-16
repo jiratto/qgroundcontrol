@@ -797,6 +797,9 @@ public:
     Q_INVOKABLE void guidedModeROI(const QGeoCoordinate& centerCoord);
     Q_INVOKABLE void stopGuidedModeROI();
 
+    /// Command vehicle to on/off relay
+    Q_INVOKABLE void setRelayToggle(int id);
+
     /// Command vehicle to pause at current location. If vehicle supports guide mode, vehicle will be left
     /// in guided mode after pause.
     Q_INVOKABLE void pauseVehicle();
