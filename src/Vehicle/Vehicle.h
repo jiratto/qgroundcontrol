@@ -696,6 +696,14 @@ public:
     Q_PROPERTY(bool                 isROIEnabled            READ isROIEnabled                                           NOTIFY isROIEnabledChanged)
     Q_PROPERTY(CheckList            checkListState          READ checkListState         WRITE setCheckListState         NOTIFY checkListStateChanged)
 
+    // rtnasv
+    Q_PROPERTY(bool                 relay1Enabled           READ relay1Enabled                                          NOTIFY relay1EnabledChanged)
+    Q_PROPERTY(bool                 relay2Enabled           READ relay2Enabled                                          NOTIFY relay2EnabledChanged)
+    Q_PROPERTY(bool                 relay3Enabled           READ relay3Enabled                                          NOTIFY relay3EnabledChanged)
+    Q_PROPERTY(bool                 relay4Enabled           READ relay4Enabled                                          NOTIFY relay4EnabledChanged)
+    Q_PROPERTY(bool                 relay5Enabled           READ relay5Enabled                                          NOTIFY relay5EnabledChanged)
+    Q_PROPERTY(bool                 relay6Enabled           READ relay6Enabled                                          NOTIFY relay6EnabledChanged)
+
     // The following properties relate to Orbit status
     Q_PROPERTY(bool             orbitActive     READ orbitActive        NOTIFY orbitActiveChanged)
     Q_PROPERTY(QGCMapCircle*    orbitMapCircle  READ orbitMapCircle     CONSTANT)
@@ -1180,6 +1188,14 @@ public:
     bool        gimbalData              () { return _haveGimbalData; }
     bool        isROIEnabled            () { return _isROIEnabled; }
 
+    // rtnasv
+    bool        relay1Enabled           () { return _relay1Enabled; }
+    bool        relay2Enabled           () { return _relay2Enabled; }
+    bool        relay3Enabled           () { return _relay3Enabled; }
+    bool        relay4Enabled           () { return _relay4Enabled; }
+    bool        relay5Enabled           () { return _relay5Enabled; }
+    bool        relay6Enabled           () { return _relay6Enabled; }
+
     CheckList   checkListState          () { return _checkListState; }
     void        setCheckListState       (CheckList cl)  { _checkListState = cl; emit checkListStateChanged(); }
 
@@ -1301,6 +1317,14 @@ signals:
     void gimbalDataChanged              ();
     void isROIEnabledChanged            ();
 
+    // rtnasv
+    void relay1EnabledChanged           ();
+    void relay2EnabledChanged           ();
+    void relay3EnabledChanged           ();
+    void relay4EnabledChanged           ();
+    void relay5EnabledChanged           ();
+    void relay6EnabledChanged           ();
+
 private slots:
     void _mavlinkMessageReceived        (LinkInterface* link, mavlink_message_t message);
     void _linkInactiveOrDeleted         (LinkInterface* link);
@@ -1382,8 +1406,11 @@ private:
     void _handleGimbalOrientation       (const mavlink_message_t& message);
     void _handleObstacleDistance        (const mavlink_message_t& message);
     void _handleGpsGlobalOrigin         (const mavlink_message_t& message);
+    // rtnasv
     void _handleWeatherInfo             (const mavlink_message_t& message);
     void _handleAisVessel               (const mavlink_message_t& message);
+    void _handleRtnasvADC               (const mavlink_message_t& message);
+    void _handleRtnasvGPIO              (const mavlink_message_t& message);
     // ArduPilot dialect messages
 #if !defined(NO_ARDUPILOT_DIALECT)
     void _handleCameraFeedback          (const mavlink_message_t& message);
@@ -1687,4 +1714,11 @@ private:
     static const char* _joystickModeSettingsKey;
     static const char* _joystickEnabledSettingsKey;
 
+    // rtnasv
+    bool _relay1Enabled;
+    bool _relay2Enabled;
+    bool _relay3Enabled;
+    bool _relay4Enabled;
+    bool _relay5Enabled;
+    bool _relay6Enabled;
 };

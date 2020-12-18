@@ -854,11 +854,19 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN:
         _handleGpsGlobalOrigin(message);
         break;
+
+    // rtnasv
     case MAVLINK_MSG_ID_WEATHER_INFO:
         _handleWeatherInfo(message);
         break;
     case MAVLINK_MSG_ID_AIS_VESSEL:
         _handleAisVessel(message);
+        break;
+    case MAVLINK_MSG_ID_RTNASV_ADC:
+        _handleRtnasvADC(message);
+        break;
+    case MAVLINK_MSG_ID_RTNASV_GPIO:
+        _handleRtnasvGPIO(message);
         break;
 
     case MAVLINK_MSG_ID_SERIAL_CONTROL:
@@ -4337,6 +4345,7 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     mavlink_ais_vessel_t o;
     mavlink_msg_ais_vessel_decode(&message, &o);
 
+    // TODO
     o.lat = 137382999;
     o.lon = 1005301999;
 
@@ -4352,6 +4361,51 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
 
     _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
+}
+
+void Vehicle::_handleRtnasvADC(const mavlink_message_t& message)
+{
+    mavlink_rtnasv_adc_t o;
+    mavlink_msg_rtnasv_adc_decode(&message, &o);
+
+}
+
+void Vehicle::_handleRtnasvGPIO(const mavlink_message_t& message)
+{
+    mavlink_rtnasv_gpio_t o;
+    mavlink_msg_rtnasv_gpio_decode(&message, &o);
+
+    bool relay1 = ((o.gpio0 & 0x01) == 0x01) ? true : false;
+    bool relay2 = ((o.gpio0 & 0x02) == 0x02) ? true : false;
+    bool relay3 = ((o.gpio0 & 0x04) == 0x04) ? true : false;
+    bool relay4 = ((o.gpio0 & 0x08) == 0x08) ? true : false;
+    bool relay5 = ((o.gpio0 & 0x10) == 0x10) ? true : false;
+    bool relay6 = ((o.gpio1 & 0x01) == 0x01) ? true : false;
+
+    if (relay1 != _relay1Enabled) {
+        _relay1Enabled = relay1;
+        emit relay1EnabledChanged();
+    }
+    if (relay2 != _relay2Enabled) {
+        _relay2Enabled = relay2;
+        emit relay2EnabledChanged();
+    }
+    if (relay3 != _relay3Enabled) {
+        _relay3Enabled = relay3;
+        emit relay3EnabledChanged();
+    }
+    if (relay4 != _relay4Enabled) {
+        _relay4Enabled = relay4;
+        emit relay4EnabledChanged();
+    }
+    if (relay5 != _relay5Enabled) {
+        _relay5Enabled = relay5;
+        emit relay5EnabledChanged();
+    }
+    if (relay6 != _relay6Enabled) {
+        _relay6Enabled = relay6;
+        emit relay6EnabledChanged();
+    }
 }
 
 void Vehicle::updateFlightDistance(double distance)

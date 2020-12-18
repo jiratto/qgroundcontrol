@@ -641,6 +641,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay1Enabled,
                     action:             _guidedController.actionRelay1
                 },
                 {
@@ -648,6 +649,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay2Enabled,
                     action:             _guidedController.actionRelay2
                 },
                 {
@@ -655,6 +657,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay3Enabled,
                     action:             _guidedController.actionRelay3
                 },
                 {
@@ -662,6 +665,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay4Enabled,
                     action:             _guidedController.actionRelay4
                 },
                 {
@@ -669,6 +673,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay5Enabled,
                     action:             _guidedController.actionRelay5
                 },
                 {
@@ -676,6 +681,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
+                    checked:            activeVehicle.relay6Enabled,
                     action:             _guidedController.actionRelay6
                 },
                 {
