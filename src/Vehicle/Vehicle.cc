@@ -87,6 +87,7 @@ const char* Vehicle::_battery1FactGroupName =           "battery";
 const char* Vehicle::_battery2FactGroupName =           "battery2";
 const char* Vehicle::_windFactGroupName =               "wind";
 const char* Vehicle::_weatherFactGroupName =            "weather";
+const char* Vehicle::_adcFactGroupName =                "adc";
 const char* Vehicle::_vibrationFactGroupName =          "vibration";
 const char* Vehicle::_temperatureFactGroupName =        "temperature";
 const char* Vehicle::_clockFactGroupName =              "clock";
@@ -500,6 +501,7 @@ void Vehicle::_commonInit()
     _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
 //    _addFactGroup(&_windFactGroup,              _windFactGroupName);
     _addFactGroup(&_weatherFactGroup,           _weatherFactGroupName);
+    _addFactGroup(&_adcFactGroup,               _adcFactGroupName);
 //    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
 //    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
 //    _addFactGroup(&_clockFactGroup,             _clockFactGroupName);
@@ -4334,6 +4336,7 @@ void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
 
+    // TODO
     _weatherFactGroup.wind_angle_true()->setRawValue(o.wind_angle_true);
     _weatherFactGroup.wind_angle_relative()->setRawValue(o.wind_angle_relative);
     _weatherFactGroup.wind_speed_true()->setRawValue(o.wind_speed_true);
@@ -4368,6 +4371,14 @@ void Vehicle::_handleRtnasvADC(const mavlink_message_t& message)
     mavlink_rtnasv_adc_t o;
     mavlink_msg_rtnasv_adc_decode(&message, &o);
 
+    _adcFactGroup.adc1()->setRawValue(o.adc1 * 0.01f);
+    _adcFactGroup.adc2()->setRawValue(o.adc2 * 0.01f);
+    _adcFactGroup.adc3()->setRawValue(o.adc3 * 0.01f);
+    _adcFactGroup.adc4()->setRawValue(o.adc4 * 0.01f);
+    _adcFactGroup.adc5()->setRawValue(o.adc5 * 0.01f);
+    _adcFactGroup.adc6()->setRawValue(o.adc6 * 0.01f);
+    _adcFactGroup.adc7()->setRawValue(o.adc7 * 0.01f);
+    _adcFactGroup.adc8()->setRawValue(o.adc8 * 0.01f);
 }
 
 void Vehicle::_handleRtnasvGPIO(const mavlink_message_t& message)
@@ -4532,6 +4543,45 @@ VehicleWeatherFactGroup::VehicleWeatherFactGroup(QObject* parent)
     _waterSpeedFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesTotalFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesSinceResetFact.setRawValue        (std::numeric_limits<float>::quiet_NaN());
+}
+
+const char* VehicleAdcFactGroup::_adc1FactName = "adc1";
+const char* VehicleAdcFactGroup::_adc2FactName = "adc2";
+const char* VehicleAdcFactGroup::_adc3FactName = "adc3";
+const char* VehicleAdcFactGroup::_adc4FactName = "adc4";
+const char* VehicleAdcFactGroup::_adc5FactName = "adc5";
+const char* VehicleAdcFactGroup::_adc6FactName = "adc6";
+const char* VehicleAdcFactGroup::_adc7FactName = "adc7";
+const char* VehicleAdcFactGroup::_adc8FactName = "adc8";
+
+VehicleAdcFactGroup::VehicleAdcFactGroup(QObject* parent)
+    : FactGroup(1000, ":/json/Vehicle/AdcFact.json", parent)
+    , _adc1Fact(0, _adc1FactName, FactMetaData::valueTypeDouble)
+    , _adc2Fact(0, _adc2FactName, FactMetaData::valueTypeDouble)
+    , _adc3Fact(0, _adc3FactName, FactMetaData::valueTypeDouble)
+    , _adc4Fact(0, _adc4FactName, FactMetaData::valueTypeDouble)
+    , _adc5Fact(0, _adc5FactName, FactMetaData::valueTypeDouble)
+    , _adc6Fact(0, _adc6FactName, FactMetaData::valueTypeDouble)
+    , _adc7Fact(0, _adc7FactName, FactMetaData::valueTypeDouble)
+    , _adc8Fact(0, _adc8FactName, FactMetaData::valueTypeDouble)
+{
+    _addFact(&_adc1Fact, _adc1FactName);
+    _addFact(&_adc2Fact, _adc2FactName);
+    _addFact(&_adc3Fact, _adc3FactName);
+    _addFact(&_adc4Fact, _adc4FactName);
+    _addFact(&_adc5Fact, _adc5FactName);
+    _addFact(&_adc6Fact, _adc6FactName);
+    _addFact(&_adc7Fact, _adc7FactName);
+    _addFact(&_adc8Fact, _adc8FactName);
+
+    _adc1Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc2Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc3Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc4Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc5Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc6Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc7Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _adc8Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
 }
 
 const char* VehicleVibrationFactGroup::_xAxisFactName =      "xAxis";

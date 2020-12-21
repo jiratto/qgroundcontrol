@@ -261,6 +261,51 @@ private:
     Fact        _milesSinceResetFact;
 };
 
+class VehicleAdcFactGroup : public FactGroup
+{
+    Q_OBJECT
+
+public:
+    VehicleAdcFactGroup(QObject* parent = nullptr);
+
+    Q_PROPERTY(Fact* adc1        READ adc1        CONSTANT)
+    Q_PROPERTY(Fact* adc2        READ adc2        CONSTANT)
+    Q_PROPERTY(Fact* adc3        READ adc3        CONSTANT)
+    Q_PROPERTY(Fact* adc4        READ adc4        CONSTANT)
+    Q_PROPERTY(Fact* adc5        READ adc5        CONSTANT)
+    Q_PROPERTY(Fact* adc6        READ adc6        CONSTANT)
+    Q_PROPERTY(Fact* adc7        READ adc7        CONSTANT)
+    Q_PROPERTY(Fact* adc8        READ adc8        CONSTANT)
+
+    Fact* adc1       () { return &_adc1Fact; }
+    Fact* adc2       () { return &_adc2Fact; }
+    Fact* adc3       () { return &_adc3Fact; }
+    Fact* adc4       () { return &_adc4Fact; }
+    Fact* adc5       () { return &_adc5Fact; }
+    Fact* adc6       () { return &_adc6Fact; }
+    Fact* adc7       () { return &_adc7Fact; }
+    Fact* adc8       () { return &_adc8Fact; }
+
+    static const char* _adc1FactName;
+    static const char* _adc2FactName;
+    static const char* _adc3FactName;
+    static const char* _adc4FactName;
+    static const char* _adc5FactName;
+    static const char* _adc6FactName;
+    static const char* _adc7FactName;
+    static const char* _adc8FactName;
+
+private:
+    Fact        _adc1Fact;
+    Fact        _adc2Fact;
+    Fact        _adc3Fact;
+    Fact        _adc4Fact;
+    Fact        _adc5Fact;
+    Fact        _adc6Fact;
+    Fact        _adc7Fact;
+    Fact        _adc8Fact;
+};
+
 class VehicleGPSFactGroup : public FactGroup
 {
     Q_OBJECT
@@ -748,6 +793,7 @@ public:
     Q_PROPERTY(FactGroup* battery2          READ battery2FactGroup          CONSTANT)
     Q_PROPERTY(FactGroup* wind              READ windFactGroup              CONSTANT)
     Q_PROPERTY(FactGroup* weather           READ weatherFactGroup           CONSTANT)
+    Q_PROPERTY(FactGroup* adc               READ adcFactGroup               CONSTANT)
     Q_PROPERTY(FactGroup* vibration         READ vibrationFactGroup         CONSTANT)
     Q_PROPERTY(FactGroup* temperature       READ temperatureFactGroup       CONSTANT)
     Q_PROPERTY(FactGroup* clock             READ clockFactGroup             CONSTANT)
@@ -1065,6 +1111,7 @@ public:
     FactGroup* battery2FactGroup            () { return &_battery2FactGroup; }
     FactGroup* windFactGroup                () { return &_windFactGroup; }
     FactGroup* weatherFactGroup             () { return &_weatherFactGroup; }
+    FactGroup* adcFactGroup                 () { return &_adcFactGroup; }
     FactGroup* vibrationFactGroup           () { return &_vibrationFactGroup; }
     FactGroup* temperatureFactGroup         () { return &_temperatureFactGroup; }
     FactGroup* clockFactGroup               () { return &_clockFactGroup; }
@@ -1669,6 +1716,7 @@ private:
     VehicleBatteryFactGroup         _battery2FactGroup;
     VehicleWindFactGroup            _windFactGroup;
     VehicleWeatherFactGroup         _weatherFactGroup;
+    VehicleAdcFactGroup             _adcFactGroup;
     VehicleVibrationFactGroup       _vibrationFactGroup;
     VehicleTemperatureFactGroup     _temperatureFactGroup;
     VehicleClockFactGroup           _clockFactGroup;
@@ -1701,6 +1749,7 @@ private:
     static const char* _battery2FactGroupName;
     static const char* _windFactGroupName;
     static const char* _weatherFactGroupName;
+    static const char* _adcFactGroupName;
     static const char* _vibrationFactGroupName;
     static const char* _temperatureFactGroupName;
     static const char* _clockFactGroupName;

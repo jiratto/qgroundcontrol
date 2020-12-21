@@ -1,0 +1,58 @@
+[
+{
+    "name":             "adc1",
+    "shortDescription": "ADC output 1",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc2",
+    "shortDescription": "ADC output 2",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc3",
+    "shortDescription": "ADC output 3",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc4",
+    "shortDescription": "ADC output 4",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc5",
+    "shortDescription": "ADC output 5",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc6",
+    "shortDescription": "ADC output 6",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc7",
+    "shortDescription": "ADC output 7",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+},
+{
+    "name":             "adc8",
+    "shortDescription": "ADC output 8",
+    "type":             "double",
+    "decimalPlaces":    2,
+    "units":            "v"
+}
+]

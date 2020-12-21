@@ -569,7 +569,7 @@ Item {
             anchors.top:        parent.top
             z:                  _mapAndVideo.z + 4
             maxHeight:          parent.height - toolStrip.y + (_flightVideo.visible ? (_flightVideo.y - parent.height) : 0)
-            title:              qsTr("Fly")
+            title:              qsTr("On/Off")
 
             property bool _anyActionAvailable: _guidedController.showStartMission || _guidedController.showResumeMission || _guidedController.showChangeAlt || _guidedController.showLandAbort
             property var _actionModel: [
@@ -638,7 +638,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay1Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay1Enabled,
@@ -646,7 +646,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay2Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay2Enabled,
@@ -654,7 +654,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay3Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay3Enabled,
@@ -662,7 +662,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay4Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay4Enabled,
@@ -670,7 +670,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay5Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay5Enabled,
@@ -678,7 +678,7 @@ Item {
                 },
                 {
                     name:               _guidedController.relay6Title,
-                    iconSource:         "/res/action.svg",
+                    iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
                     checked:            activeVehicle.relay6Enabled,
