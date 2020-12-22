@@ -200,12 +200,12 @@ private:
     Fact        _verticalSpeedFact;
 };
 
-class VehicleWeatherFactGroup : public FactGroup
+class VehicleWeatherStationFactGroup : public FactGroup
 {
     Q_OBJECT
 
 public:
-    VehicleWeatherFactGroup(QObject* parent = nullptr);
+    VehicleWeatherStationFactGroup(QObject* parent = nullptr);
 
     Q_PROPERTY(Fact* wind_angle_true        READ wind_angle_true        CONSTANT)
     Q_PROPERTY(Fact* wind_angle_relative    READ wind_angle_relative    CONSTANT)
@@ -259,6 +259,27 @@ private:
     Fact        _waterSpeedFact;
     Fact        _milesTotalFact;
     Fact        _milesSinceResetFact;
+};
+
+class VehicleWaterSpeedFactGroup : public FactGroup
+{
+    Q_OBJECT
+
+public:
+    VehicleWaterSpeedFactGroup(QObject* parent = nullptr);
+
+    Q_PROPERTY(Fact* water_speed_true       READ water_speed_true        CONSTANT)
+    Q_PROPERTY(Fact* water_speed_relative   READ water_speed_relative    CONSTANT)
+
+    Fact* water_speed_true       () { return &_waterSpeedTrueFact; }
+    Fact* water_speed_relative   () { return &_waterSpeedRelativeFact; }
+
+    static const char* _waterSpeedTrueFactName;
+    static const char* _waterSpeedRelativeFactName;
+
+private:
+    Fact        _waterSpeedTrueFact;
+    Fact        _waterSpeedRelativeFact;
 };
 
 class VehicleAdcFactGroup : public FactGroup
@@ -1110,7 +1131,7 @@ public:
     FactGroup* battery1FactGroup            () { return &_battery1FactGroup; }
     FactGroup* battery2FactGroup            () { return &_battery2FactGroup; }
     FactGroup* windFactGroup                () { return &_windFactGroup; }
-    FactGroup* weatherFactGroup             () { return &_weatherFactGroup; }
+    FactGroup* weatherFactGroup             () { return &_weatherStationFactGroup; }
     FactGroup* adcFactGroup                 () { return &_adcFactGroup; }
     FactGroup* vibrationFactGroup           () { return &_vibrationFactGroup; }
     FactGroup* temperatureFactGroup         () { return &_temperatureFactGroup; }
@@ -1454,10 +1475,12 @@ private:
     void _handleObstacleDistance        (const mavlink_message_t& message);
     void _handleGpsGlobalOrigin         (const mavlink_message_t& message);
     // rtnasv
-    void _handleWeatherInfo             (const mavlink_message_t& message);
+    void _handleWeatherStation          (const mavlink_message_t& message);
+    void _handleWaterSpeed              (const mavlink_message_t& message);
     void _handleAisVessel               (const mavlink_message_t& message);
     void _handleRtnasvADC               (const mavlink_message_t& message);
     void _handleRtnasvGPIO              (const mavlink_message_t& message);
+
     // ArduPilot dialect messages
 #if !defined(NO_ARDUPILOT_DIALECT)
     void _handleCameraFeedback          (const mavlink_message_t& message);
@@ -1715,14 +1738,17 @@ private:
     VehicleBatteryFactGroup         _battery1FactGroup;
     VehicleBatteryFactGroup         _battery2FactGroup;
     VehicleWindFactGroup            _windFactGroup;
-    VehicleWeatherFactGroup         _weatherFactGroup;
-    VehicleAdcFactGroup             _adcFactGroup;
     VehicleVibrationFactGroup       _vibrationFactGroup;
     VehicleTemperatureFactGroup     _temperatureFactGroup;
     VehicleClockFactGroup           _clockFactGroup;
     VehicleSetpointFactGroup        _setpointFactGroup;
     VehicleDistanceSensorFactGroup  _distanceSensorFactGroup;
     VehicleEstimatorStatusFactGroup _estimatorStatusFactGroup;
+
+    // rtnasv
+    VehicleWeatherStationFactGroup  _weatherStationFactGroup;
+    VehicleWaterSpeedFactGroup      _waterSpeedFactGroup;
+    VehicleAdcFactGroup             _adcFactGroup;
 
     static const char* _rollFactName;
     static const char* _pitchFactName;
@@ -1748,13 +1774,15 @@ private:
     static const char* _battery1FactGroupName;
     static const char* _battery2FactGroupName;
     static const char* _windFactGroupName;
-    static const char* _weatherFactGroupName;
-    static const char* _adcFactGroupName;
     static const char* _vibrationFactGroupName;
     static const char* _temperatureFactGroupName;
     static const char* _clockFactGroupName;
     static const char* _distanceSensorFactGroupName;
     static const char* _estimatorStatusFactGroupName;
+    // rtnasv
+    static const char* _weatherFactGroupName;
+    static const char* _waterSpeedFactGroupName;
+    static const char* _adcFactGroupName;
 
     static const int _vehicleUIUpdateRateMSecs = 100;
 

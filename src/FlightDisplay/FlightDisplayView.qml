@@ -641,7 +641,7 @@ Item {
                     iconSource:         "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay1Enabled,
+                    checked:            activeVehicle ? activeVehicle.relay1Enabled : false,
                     action:             _guidedController.actionRelay1
                 },
                 {

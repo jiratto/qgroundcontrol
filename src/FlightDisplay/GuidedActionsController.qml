@@ -52,11 +52,11 @@ Item {
     readonly property string gotoTitle:                     qsTr("Go To Location")
     readonly property string vtolTransitionTitle:           qsTr("VTOL Transition")
     readonly property string roiTitle:                      qsTr("ROI")
-    readonly property string relay1Title:                   qsTr("Relay1")
-    readonly property string relay2Title:                   qsTr("Relay2")
-    readonly property string relay3Title:                   qsTr("Relay3")
-    readonly property string relay4Title:                   qsTr("Relay4")
-    readonly property string relay5Title:                   qsTr("Relay5")
+    readonly property string relay1Title:                   qsTr("Siren")
+    readonly property string relay2Title:                   qsTr("All Around")
+    readonly property string relay3Title:                   qsTr("Nav Lt.")
+    readonly property string relay4Title:                   qsTr("Spot Pt.")
+    readonly property string relay5Title:                   qsTr("Spot Sb.")
     readonly property string relay6Title:                   qsTr("Relay6")
 
     readonly property string armMessage:                        qsTr("Arm the vehicle.")
@@ -78,6 +78,7 @@ Item {
     readonly property string vtolTransitionFwdMessage:          qsTr("Transition VTOL to fixed wing flight.")
     readonly property string vtolTransitionMRMessage:           qsTr("Transition VTOL to multi-rotor flight.")
     readonly property string roiMessage:                        qsTr("Make the specified location a Region Of Interest.")
+    readonly property string relay6Message:                     qsTr("Toggle relay6.")
 
     readonly property int actionRTL:                        1
     readonly property int actionLand:                       2
@@ -419,7 +420,7 @@ Item {
             return;
         case actionRelay6:
             confirmDialog.title = relay6Title
-            confirmDialog.message = relay6Title
+            confirmDialog.message = relay6Message
             confirmDialog.hideTrigger = true
             break;
         default:

@@ -192,6 +192,7 @@
         <file alias="Mavlink.png">src/ui/toolbar/Images/Mavlink.png</file>
         <file alias="aisAlertVehicle.png">src/FlightMap/Images/aisAlertVehicle.png</file>
         <file alias="aisVehicle.png">src/FlightMap/Images/aisVehicle.png</file>
+        <file alias="HG/BrandImage">src/FirmwarePlugin/HG/HGBrandImage.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

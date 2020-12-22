@@ -86,13 +86,16 @@ const char* Vehicle::_gpsFactGroupName =                "gps";
 const char* Vehicle::_battery1FactGroupName =           "battery";
 const char* Vehicle::_battery2FactGroupName =           "battery2";
 const char* Vehicle::_windFactGroupName =               "wind";
-const char* Vehicle::_weatherFactGroupName =            "weather";
-const char* Vehicle::_adcFactGroupName =                "adc";
 const char* Vehicle::_vibrationFactGroupName =          "vibration";
 const char* Vehicle::_temperatureFactGroupName =        "temperature";
 const char* Vehicle::_clockFactGroupName =              "clock";
 const char* Vehicle::_distanceSensorFactGroupName =     "distanceSensor";
 const char* Vehicle::_estimatorStatusFactGroupName =    "estimatorStatus";
+
+// rtnasv
+const char* Vehicle::_weatherFactGroupName =            "weatherStation";
+const char* Vehicle::_waterSpeedFactGroupName =         "waterSpeed";
+const char* Vehicle::_adcFactGroupName =                "adc";
 
 // Standard connected vehicle
 Vehicle::Vehicle(LinkInterface*             link,
@@ -215,12 +218,14 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
-    , _weatherFactGroup(this)
     , _vibrationFactGroup(this)
     , _temperatureFactGroup(this)
     , _clockFactGroup(this)
     , _distanceSensorFactGroup(this)
     , _estimatorStatusFactGroup(this)
+    , _weatherStationFactGroup(this)
+    , _waterSpeedFactGroup(this)
+    , _adcFactGroup(this)
 {
     connect(_joystickManager, &JoystickManager::activeJoystickChanged, this, &Vehicle::_loadSettings);
     connect(qgcApp()->toolbox()->multiVehicleManager(), &MultiVehicleManager::activeVehicleAvailableChanged, this, &Vehicle::_loadSettings);
@@ -416,10 +421,12 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
-    , _weatherFactGroup(this)
     , _vibrationFactGroup(this)
     , _clockFactGroup(this)
     , _distanceSensorFactGroup(this)
+    , _weatherStationFactGroup(this)
+    , _waterSpeedFactGroup(this)
+    , _adcFactGroup(this)
 {
     _commonInit();
 
@@ -500,7 +507,8 @@ void Vehicle::_commonInit()
     _addFactGroup(&_battery1FactGroup,          _battery1FactGroupName);
     _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
 //    _addFactGroup(&_windFactGroup,              _windFactGroupName);
-    _addFactGroup(&_weatherFactGroup,           _weatherFactGroupName);
+    _addFactGroup(&_weatherStationFactGroup,    _weatherFactGroupName);
+    _addFactGroup(&_waterSpeedFactGroup,        _waterSpeedFactGroupName);
     _addFactGroup(&_adcFactGroup,               _adcFactGroupName);
 //    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
 //    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
@@ -859,7 +867,10 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
 
     // rtnasv
     case MAVLINK_MSG_ID_WEATHER_INFO:
-        _handleWeatherInfo(message);
+        _handleWeatherStation(message);
+        break;
+    case MAVLINK_MSG_ID_WATER_SPEED:
+        _handleWaterSpeed(message);
         break;
     case MAVLINK_MSG_ID_AIS_VESSEL:
         _handleAisVessel(message);
@@ -4331,16 +4342,24 @@ void Vehicle::_handleGpsGlobalOrigin(const mavlink_message_t& message)
     qDebug() << "lat:" << (o.latitude * 1e-7) << "lon:" << (o.longitude * 1e-7);
 }
 
-void Vehicle::_handleWeatherInfo(const mavlink_message_t& message)
+void Vehicle::_handleWeatherStation(const mavlink_message_t& message)
 {
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
 
     // TODO
-    _weatherFactGroup.wind_angle_true()->setRawValue(o.wind_angle_true);
-    _weatherFactGroup.wind_angle_relative()->setRawValue(o.wind_angle_relative);
-    _weatherFactGroup.wind_speed_true()->setRawValue(o.wind_speed_true);
-    _weatherFactGroup.wind_speed_relative()->setRawValue(o.wind_speed_relative);
+    _weatherStationFactGroup.wind_angle_true()->setRawValue(o.wind_angle_true);
+    _weatherStationFactGroup.wind_angle_relative()->setRawValue(o.wind_angle_relative);
+    _weatherStationFactGroup.wind_speed_true()->setRawValue(o.wind_speed_true);
+    _weatherStationFactGroup.wind_speed_relative()->setRawValue(o.wind_speed_relative);
+}
+
+void Vehicle::_handleWaterSpeed(const mavlink_message_t& message)
+{
+    mavlink_water_speed_t o;
+    mavlink_msg_water_speed_decode(&message, &o);
+    _waterSpeedFactGroup.water_speed_true()->setRawValue(o.water_speed_true);
+    _waterSpeedFactGroup.water_speed_relative()->setRawValue(o.water_speed_relative);
 }
 
 void Vehicle::_handleAisVessel(const mavlink_message_t& message)
@@ -4489,20 +4508,20 @@ VehicleWindFactGroup::VehicleWindFactGroup(QObject* parent)
     _verticalSpeedFact.setRawValue  (std::numeric_limits<float>::quiet_NaN());
 }
 
-const char* VehicleWeatherFactGroup::_windAngleTrueFactName         = "windAngleTrue";
-const char* VehicleWeatherFactGroup::_windAngleRelativeFactName     = "windAngleRelative";
-const char* VehicleWeatherFactGroup::_windSpeedTrueFactName         = "windSpeedTrue";
-const char* VehicleWeatherFactGroup::_windSpeedRelativeFactName     = "windSpeedRelative";
-const char* VehicleWeatherFactGroup::_airPressureBarFactName        = "airPressure";
-const char* VehicleWeatherFactGroup::_airTemperatureFactName        = "airTemperature";
-const char* VehicleWeatherFactGroup::_airRelativeHumidityFactName   = "airHumidity";
-const char* VehicleWeatherFactGroup::_waterDepthFactName            = "waterDepth";
-const char* VehicleWeatherFactGroup::_waterTemperatureFactName      = "waterTemperature";
-const char* VehicleWeatherFactGroup::_waterSpeedFactName            = "waterSpeed";
-const char* VehicleWeatherFactGroup::_milesTotalFactName            = "milesTotal";
-const char* VehicleWeatherFactGroup::_milesSinceResetFactName       = "milesSinceReset";
+const char* VehicleWeatherStationFactGroup::_windAngleTrueFactName         = "windAngleTrue";
+const char* VehicleWeatherStationFactGroup::_windAngleRelativeFactName     = "windAngleRelative";
+const char* VehicleWeatherStationFactGroup::_windSpeedTrueFactName         = "windSpeedTrue";
+const char* VehicleWeatherStationFactGroup::_windSpeedRelativeFactName     = "windSpeedRelative";
+const char* VehicleWeatherStationFactGroup::_airPressureBarFactName        = "airPressure";
+const char* VehicleWeatherStationFactGroup::_airTemperatureFactName        = "airTemperature";
+const char* VehicleWeatherStationFactGroup::_airRelativeHumidityFactName   = "airHumidity";
+const char* VehicleWeatherStationFactGroup::_waterDepthFactName            = "waterDepth";
+const char* VehicleWeatherStationFactGroup::_waterTemperatureFactName      = "waterTemperature";
+const char* VehicleWeatherStationFactGroup::_waterSpeedFactName            = "waterSpeed";
+const char* VehicleWeatherStationFactGroup::_milesTotalFactName            = "milesTotal";
+const char* VehicleWeatherStationFactGroup::_milesSinceResetFactName       = "milesSinceReset";
 
-VehicleWeatherFactGroup::VehicleWeatherFactGroup(QObject* parent)
+VehicleWeatherStationFactGroup::VehicleWeatherStationFactGroup(QObject* parent)
     : FactGroup(1000, ":/json/Vehicle/WeatherFact.json", parent)
     , _windAngleTrueFact            (0, _windAngleTrueFactName,         FactMetaData::valueTypeDouble)
     , _windAngleRelativeFact        (0, _windAngleRelativeFactName,     FactMetaData::valueTypeDouble)
@@ -4543,6 +4562,21 @@ VehicleWeatherFactGroup::VehicleWeatherFactGroup(QObject* parent)
     _waterSpeedFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesTotalFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesSinceResetFact.setRawValue        (std::numeric_limits<float>::quiet_NaN());
+}
+
+const char* VehicleWaterSpeedFactGroup::_waterSpeedTrueFactName        = "waterSpeedTrue";
+const char* VehicleWaterSpeedFactGroup::_waterSpeedRelativeFactName    = "waterSpeedRelative";
+
+VehicleWaterSpeedFactGroup::VehicleWaterSpeedFactGroup(QObject* parent)
+    : FactGroup(1000, ":/json/Vehicle/WaterSpeedFact.json", parent)
+    , _waterSpeedTrueFact            (0, _waterSpeedTrueFactName,         FactMetaData::valueTypeDouble)
+    , _waterSpeedRelativeFact        (0, _waterSpeedRelativeFactName,     FactMetaData::valueTypeDouble)
+{
+    _addFact(&_waterSpeedTrueFact,       _waterSpeedTrueFactName);
+    _addFact(&_waterSpeedRelativeFact,   _waterSpeedRelativeFactName);
+
+    _waterSpeedTrueFact.setRawValue          (std::numeric_limits<float>::quiet_NaN());
+    _waterSpeedRelativeFact.setRawValue      (std::numeric_limits<float>::quiet_NaN());
 }
 
 const char* VehicleAdcFactGroup::_adc1FactName = "adc1";

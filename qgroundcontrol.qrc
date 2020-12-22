@@ -292,6 +292,7 @@
         <file alias="Video.SettingsGroup.json">src/Settings/Video.SettingsGroup.json</file>
         <file alias="Vehicle/WeatherFact.json">src/Vehicle/WeatherFact.json</file>
         <file alias="Vehicle/AdcFact.json">src/Vehicle/AdcFact.json</file>
+        <file alias="Vehicle/WaterSpeedFact.json">src/Vehicle/WaterSpeedFact.json</file>
     </qresource>
     <qresource prefix="/MockLink">
         <file alias="APMArduSubMockLink.params">src/comm/APMArduSubMockLink.params</file>
