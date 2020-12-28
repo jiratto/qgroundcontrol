@@ -4347,11 +4347,19 @@ void Vehicle::_handleWeatherStation(const mavlink_message_t& message)
     mavlink_weather_info_t o;
     mavlink_msg_weather_info_decode(&message, &o);
 
-    // TODO
     _weatherStationFactGroup.wind_angle_true()->setRawValue(o.wind_angle_true);
     _weatherStationFactGroup.wind_angle_relative()->setRawValue(o.wind_angle_relative);
     _weatherStationFactGroup.wind_speed_true()->setRawValue(o.wind_speed_true);
     _weatherStationFactGroup.wind_speed_relative()->setRawValue(o.wind_speed_relative);
+    _weatherStationFactGroup.air_pressure_bar()->setRawValue(o.air_pressure_bar);
+    _weatherStationFactGroup.air_temperature()->setRawValue(o.air_temperature);
+    _weatherStationFactGroup.air_relative_humidity()->setRawValue(o.air_relative_humidity);
+    _weatherStationFactGroup.water_depth()->setRawValue(o.water_depth);
+    _weatherStationFactGroup.water_temperature()->setRawValue(o.water_temperature);
+    _weatherStationFactGroup.water_speed()->setRawValue(o.wind_speed_true);
+    _weatherStationFactGroup.miles_total()->setRawValue(o.miles_total);
+    _weatherStationFactGroup.miles_since_reset()->setRawValue(o.miles_since_reset);
+
 }
 
 void Vehicle::_handleWaterSpeed(const mavlink_message_t& message)
@@ -4367,10 +4375,6 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     mavlink_ais_vessel_t o;
     mavlink_msg_ais_vessel_decode(&message, &o);
 
-    // TODO
-    o.lat = 137382999;
-    o.lon = 1005301999;
-
     ADSBVehicle::VehicleInfo_t vehicleInfo;
     vehicleInfo.availableFlags = 0;
     vehicleInfo.icaoAddress = o.MMSI;
@@ -4379,7 +4383,7 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     vehicleInfo.location.setLongitude(o.lon / 1e7);
     vehicleInfo.availableFlags |= ADSBVehicle::LocationAvailable;
 
-    vehicleInfo.heading = 45;
+    vehicleInfo.heading = o.heading;
     vehicleInfo.availableFlags |= ADSBVehicle::HeadingAvailable;
 
     _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
