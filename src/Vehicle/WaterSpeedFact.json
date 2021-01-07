@@ -4,13 +4,13 @@
     "shortDescription": "Water Speed True",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "knots"
+    "units":            "kn"
 },
 {
     "name":             "waterSpeedRelative",
     "shortDescription": "Water Speed Relative",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "knots"
+    "units":            "kn"
 }
 ]

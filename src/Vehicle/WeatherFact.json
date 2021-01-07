@@ -18,14 +18,14 @@
     "shortDescription": "Wind Speed True",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "m/s"
+    "units":            "kn"
 },
 {
     "name":             "windSpeedRelative",
     "shortDescription": "Wind Speed Relative",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "m/s"
+    "units":            "kn"
 },
 {
     "name":             "airPressure",
