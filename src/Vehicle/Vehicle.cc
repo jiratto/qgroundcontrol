@@ -4356,7 +4356,7 @@ void Vehicle::_handleWeatherStation(const mavlink_message_t& message)
     _weatherStationFactGroup.air_relative_humidity()->setRawValue(o.air_relative_humidity);
     _weatherStationFactGroup.water_depth()->setRawValue(o.water_depth);
     _weatherStationFactGroup.water_temperature()->setRawValue(o.water_temperature);
-    _weatherStationFactGroup.water_speed()->setRawValue(o.wind_speed_true);
+    _weatherStationFactGroup.water_speed()->setRawValue(o.water_speed);
     _weatherStationFactGroup.miles_total()->setRawValue(o.miles_total);
     _weatherStationFactGroup.miles_since_reset()->setRawValue(o.miles_since_reset);
 
@@ -4414,7 +4414,6 @@ void Vehicle::_handleRtnasvGPIO(const mavlink_message_t& message)
     bool relay3 = ((o.gpio0 & 0x04) == 0x04) ? true : false;
     bool relay4 = ((o.gpio0 & 0x08) == 0x08) ? true : false;
     bool relay5 = ((o.gpio0 & 0x10) == 0x10) ? true : false;
-    bool relay6 = ((o.gpio1 & 0x01) == 0x01) ? true : false;
 
     if (relay1 != _relay1Enabled) {
         _relay1Enabled = relay1;
@@ -4435,10 +4434,6 @@ void Vehicle::_handleRtnasvGPIO(const mavlink_message_t& message)
     if (relay5 != _relay5Enabled) {
         _relay5Enabled = relay5;
         emit relay5EnabledChanged();
-    }
-    if (relay6 != _relay6Enabled) {
-        _relay6Enabled = relay6;
-        emit relay6EnabledChanged();
     }
 }
 

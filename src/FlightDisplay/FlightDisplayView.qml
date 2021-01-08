@@ -609,23 +609,21 @@ Item {
                 {
                     name:               _guidedController.takeoffTitle,
                     iconSource:         "/res/takeoff.svg",
-                    //buttonVisible:      _guidedController.showTakeoff || !_guidedController.showLand,
-                    buttonVisible:      false,
+                    buttonVisible:      false,//_guidedController.showTakeoff || !_guidedController.showLand,
                     buttonEnabled:      _guidedController.showTakeoff,
                     action:             _guidedController.actionTakeoff
                 },
                 {
                     name:               _guidedController.landTitle,
                     iconSource:         "/res/land.svg",
-                    //buttonVisible:      _guidedController.showLand && !_guidedController.showTakeoff,
-                    buttonVisible:      false,
+                    buttonVisible:      false,//_guidedController.showLand && !_guidedController.showTakeoff,
                     buttonEnabled:      _guidedController.showLand,
                     action:             _guidedController.actionLand
                 },
                 {
                     name:               _guidedController.rtlTitle,
                     iconSource:         "/res/rtl.svg",
-                    buttonVisible:      false,
+                    buttonVisible:      false,//true,
                     buttonEnabled:      _guidedController.showRTL,
                     action:             _guidedController.actionRTL
                 },
@@ -638,50 +636,44 @@ Item {
                 },
                 {
                     name:               _guidedController.relay1Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         activeVehicle ? (activeVehicle.relay1Enabled ? "/res/lighton.png" : "/res/light.png") : "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle ? activeVehicle.relay1Enabled : false,
                     action:             _guidedController.actionRelay1
                 },
                 {
                     name:               _guidedController.relay2Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         activeVehicle ? (activeVehicle.relay2Enabled ? "/res/lighton.png" : "/res/light.png") : "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay2Enabled,
                     action:             _guidedController.actionRelay2
                 },
                 {
                     name:               _guidedController.relay3Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         activeVehicle ? (activeVehicle.relay3Enabled ? "/res/lighton.png" : "/res/light.png") : "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay3Enabled,
                     action:             _guidedController.actionRelay3
                 },
                 {
                     name:               _guidedController.relay4Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         activeVehicle ? (activeVehicle.relay4Enabled ? "/res/lighton.png" : "/res/light.png") : "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay4Enabled,
                     action:             _guidedController.actionRelay4
                 },
                 {
                     name:               _guidedController.relay5Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         activeVehicle ? (activeVehicle.relay5Enabled ? "/res/lighton.png" : "/res/light.png") : "/res/light.png",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay5Enabled,
                     action:             _guidedController.actionRelay5
                 },
                 {
                     name:               _guidedController.relay6Title,
-                    iconSource:         "/res/light.png",
+                    iconSource:         "/qmlimages/camera_video.svg",
                     buttonVisible:      true,
                     buttonEnabled:      true,
-                    checked:            activeVehicle.relay6Enabled,
                     action:             _guidedController.actionRelay6
                 },
                 {
@@ -689,7 +681,7 @@ Item {
                     iconSource:         "/res/action.svg",
                     buttonVisible:      _anyActionAvailable,
                     action:             -1
-                }
+                }               
             ]
 
             onClicked: {
@@ -705,7 +697,7 @@ Item {
                         _guidedController.confirmAction(action)
                     }
                 }
-
+                
             }
         }
 

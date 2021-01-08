@@ -57,7 +57,7 @@ Item {
     readonly property string relay3Title:                   qsTr("Nav Lt.")
     readonly property string relay4Title:                   qsTr("Spot Pt.")
     readonly property string relay5Title:                   qsTr("Spot Sb.")
-    readonly property string relay6Title:                   qsTr("Relay6")
+    readonly property string relay6Title:                   qsTr("FPV")
 
     readonly property string armMessage:                        qsTr("Arm the vehicle.")
     readonly property string disarmMessage:                     qsTr("Disarm the vehicle")
@@ -78,7 +78,7 @@ Item {
     readonly property string vtolTransitionFwdMessage:          qsTr("Transition VTOL to fixed wing flight.")
     readonly property string vtolTransitionMRMessage:           qsTr("Transition VTOL to multi-rotor flight.")
     readonly property string roiMessage:                        qsTr("Make the specified location a Region Of Interest.")
-    readonly property string relay6Message:                     qsTr("Toggle relay6.")
+    readonly property string relay6Message:                     qsTr("Toggle FPV Direction.")
 
     readonly property int actionRTL:                        1
     readonly property int actionLand:                       2
