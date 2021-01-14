@@ -502,7 +502,7 @@ Item {
             activeVehicle.guidedModeROI(actionData)
             break
         case actionRelay6:
-            activeVehicle.setRelayToggle(6);
+            activeVehicle.setRelayToggle(5);
             break
         default:
             console.warn(qsTr("Internal error: unknown actionCode"), actionCode)
