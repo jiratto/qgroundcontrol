@@ -1116,6 +1116,7 @@ public:
     Fact* yawRate                           () { return &_yawRateFact; }
     Fact* airSpeed                          () { return &_airSpeedFact; }
     Fact* groundSpeed                       () { return &_groundSpeedFact; }
+    Fact* vesselSpeed                       () { return &_vesselSpeedFact; }
     Fact* climbRate                         () { return &_climbRateFact; }
     Fact* altitudeRelative                  () { return &_altitudeRelativeFact; }
     Fact* altitudeAMSL                      () { return &_altitudeAMSLFact; }
@@ -1721,6 +1722,7 @@ private:
     Fact _pitchRateFact;
     Fact _yawRateFact;
     Fact _groundSpeedFact;
+    Fact _vesselSpeedFact;
     Fact _airSpeedFact;
     Fact _climbRateFact;
     Fact _altitudeRelativeFact;
@@ -1757,6 +1759,7 @@ private:
     static const char* _pitchRateFactName;
     static const char* _yawRateFactName;
     static const char* _groundSpeedFactName;
+    static const char* _vesselSpeedFactName;
     static const char* _airSpeedFactName;
     static const char* _climbRateFactName;
     static const char* _altitudeRelativeFactName;

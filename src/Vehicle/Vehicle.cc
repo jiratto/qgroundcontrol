@@ -70,6 +70,7 @@ const char* Vehicle::_pitchRateFactName =           "pitchRate";
 const char* Vehicle::_yawRateFactName =             "yawRate";
 const char* Vehicle::_airSpeedFactName =            "airSpeed";
 const char* Vehicle::_groundSpeedFactName =         "groundSpeed";
+const char* Vehicle::_vesselSpeedFactName =         "vesselSpeed";
 const char* Vehicle::_climbRateFactName =           "climbRate";
 const char* Vehicle::_altitudeRelativeFactName =    "altitudeRelative";
 const char* Vehicle::_altitudeAMSLFactName =        "altitudeAMSL";
@@ -202,6 +203,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _pitchRateFact        (0, _pitchRateFactName,         FactMetaData::valueTypeDouble)
     , _yawRateFact          (0, _yawRateFactName,           FactMetaData::valueTypeDouble)
     , _groundSpeedFact      (0, _groundSpeedFactName,       FactMetaData::valueTypeDouble)
+    , _vesselSpeedFact      (0, _vesselSpeedFactName,       FactMetaData::valueTypeDouble)
     , _airSpeedFact         (0, _airSpeedFactName,          FactMetaData::valueTypeDouble)
     , _climbRateFact        (0, _climbRateFactName,         FactMetaData::valueTypeDouble)
     , _altitudeRelativeFact (0, _altitudeRelativeFactName,  FactMetaData::valueTypeDouble)
@@ -405,6 +407,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _pitchRateFact        (0, _pitchRateFactName,         FactMetaData::valueTypeDouble)
     , _yawRateFact          (0, _yawRateFactName,           FactMetaData::valueTypeDouble)
     , _groundSpeedFact      (0, _groundSpeedFactName,       FactMetaData::valueTypeDouble)
+    , _vesselSpeedFact      (0, _vesselSpeedFactName,       FactMetaData::valueTypeDouble)
     , _airSpeedFact         (0, _airSpeedFactName,          FactMetaData::valueTypeDouble)
     , _climbRateFact        (0, _climbRateFactName,         FactMetaData::valueTypeDouble)
     , _altitudeRelativeFact (0, _altitudeRelativeFactName,  FactMetaData::valueTypeDouble)
@@ -488,6 +491,7 @@ void Vehicle::_commonInit()
     _addFact(&_pitchRateFact,           _pitchRateFactName);
     _addFact(&_yawRateFact,             _yawRateFactName);
     _addFact(&_groundSpeedFact,         _groundSpeedFactName);
+    _addFact(&_vesselSpeedFact,     _vesselSpeedFactName);
     _addFact(&_airSpeedFact,            _airSpeedFactName);
     _addFact(&_climbRateFact,           _climbRateFactName);
     _addFact(&_altitudeRelativeFact,    _altitudeRelativeFactName);
@@ -1024,6 +1028,7 @@ void Vehicle::_handleVfrHud(mavlink_message_t& message)
 
     _airSpeedFact.setRawValue(qIsNaN(vfrHud.airspeed) ? 0 : vfrHud.airspeed);
     _groundSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : vfrHud.groundspeed);
+    _vesselSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : static_cast<double>(vfrHud.groundspeed) * 1.94384);
     _climbRateFact.setRawValue(qIsNaN(vfrHud.climb) ? 0 : vfrHud.climb);
     _throttlePctFact.setRawValue(static_cast<int16_t>(vfrHud.throttle));
 }
@@ -4389,16 +4394,86 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
     _toolbox->adsbVehicleManager()->adsbVehicleUpdate(vehicleInfo);
 }
 
+// adc1:5-733 -> trim level:1-5
+#define ADC1_BASE_MIN       5
+#define ADC1_BASE_MAX       733
+#define TRIM_LIMIT_MIN      1
+#define TRIM_LIMIT_MAX      5
+
+// adc2:[0,3971] -> batt:[0,12] volt
+#define ADC2_BASE_MIN       0
+#define ADC2_BASE_MAX       3971
+#define BATT_LIMIT_MIN      0
+#define BATT_LIMIT_MAX      12
+
+// adc3:[213,644] -> rudder:[-27,27.8] deg
+#define ADC3_BASE_MIN       213
+#define ADC3_BASE_MAX       644
+#define RUDDER_LIMIT_MIN    -27.0
+#define RUDDER_LIMIT_MAX    27.8
+
+// adc4:[3781,3300] -> tacho:[700,4000] rpm
+#define ADC4_BASE_MIN       3781
+#define ADC4_BASE_MAX       3300
+#define TACHO_LIMIT_MIN     700
+#define TACHO_LIMIT_MAX     4000
+
+// adc5:[0,2185] -> fuel:[0,20] litre
+#define ADC5_BASE_MIN       0
+#define ADC5_BASE_MAX       2185
+#define FUEL_LIMIT_MIN      0
+#define FUEL_LIMIT_MAX      20
+
+// linear scale
+static double scale(double valueIn,
+                    double baseMin,
+                    double baseMax,
+                    double limitMin,
+                    double limitMax)
+{
+    return ((limitMax - limitMin) * (valueIn - baseMin) / (baseMax - baseMin)) + limitMin;
+}
+
 void Vehicle::_handleRtnasvADC(const mavlink_message_t& message)
 {
     mavlink_rtnasv_adc_t o;
     mavlink_msg_rtnasv_adc_decode(&message, &o);
 
-    _adcFactGroup.adc1()->setRawValue(o.adc1 * 0.01f);
-    _adcFactGroup.adc2()->setRawValue(o.adc2 * 0.01f);
-    _adcFactGroup.adc3()->setRawValue(o.adc3 * 0.01f);
-    _adcFactGroup.adc4()->setRawValue(o.adc4 * 0.01f);
-    _adcFactGroup.adc5()->setRawValue(o.adc5 * 0.01f);
+    int adc1 = o.adc1;
+    double trim_value = -1.0;
+    if ((adc1 >= ADC1_BASE_MIN) && (adc1 <= ADC1_BASE_MAX)) {
+        trim_value = scale(adc1, ADC1_BASE_MIN, ADC1_BASE_MAX, TRIM_LIMIT_MIN, TRIM_LIMIT_MAX);
+    }
+
+    int adc2 = o.adc2;
+    double batt_value = -1.0;
+    if ((adc2 >= ADC2_BASE_MIN) && (adc2 <= ADC2_BASE_MAX)) {
+        batt_value = scale(adc2, ADC2_BASE_MIN, ADC2_BASE_MAX, BATT_LIMIT_MIN, BATT_LIMIT_MAX);
+    }
+
+    int adc3 = o.adc3;
+    double rudder_value = -9999.9;
+    if ((adc3 >= ADC3_BASE_MIN) && (adc3 <= ADC3_BASE_MAX)) {
+        rudder_value = scale(adc3, ADC3_BASE_MIN, ADC3_BASE_MAX, RUDDER_LIMIT_MIN, RUDDER_LIMIT_MAX);
+    }
+
+    int adc4 = o.adc4;
+    double tacho_value = -1.0;
+    if ((adc4 >= ADC4_BASE_MAX) && (adc4 <= ADC4_BASE_MIN)) {
+        tacho_value = scale(adc4, ADC4_BASE_MIN, ADC4_BASE_MAX, TACHO_LIMIT_MIN, TACHO_LIMIT_MAX);
+    }
+
+    int adc5 = o.adc5;
+    double fuel_value = -1.0;
+    if ((adc5 >= ADC5_BASE_MIN) && (adc5 <= ADC5_BASE_MAX)) {
+        fuel_value = scale(adc5, ADC5_BASE_MIN, ADC5_BASE_MAX, FUEL_LIMIT_MIN, FUEL_LIMIT_MAX);
+    }
+
+    _adcFactGroup.adc1()->setRawValue(trim_value);
+    _adcFactGroup.adc2()->setRawValue(batt_value);
+    _adcFactGroup.adc3()->setRawValue(rudder_value);
+    _adcFactGroup.adc4()->setRawValue(tacho_value);
+    _adcFactGroup.adc5()->setRawValue(fuel_value);
     _adcFactGroup.adc6()->setRawValue(o.adc6 * 0.01f);
     _adcFactGroup.adc7()->setRawValue(o.adc7 * 0.01f);
     _adcFactGroup.adc8()->setRawValue(o.adc8 * 0.01f);

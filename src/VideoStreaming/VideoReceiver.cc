@@ -620,6 +620,8 @@ VideoReceiver::start()
         return;
     }
 
+    qDebug() << uri;
+
     bool useTcpConnection = uri.contains("rtsp://", Qt::CaseInsensitive) || uri.contains("tcp://", Qt::CaseInsensitive);
 
     if (_videoSink == nullptr) {

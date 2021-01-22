@@ -1,38 +1,38 @@
 [
 {
     "name":             "adc1",
-    "shortDescription": "ADC output 1",
+    "shortDescription": "Trim",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "v"
+    "units":            "level"
 },
 {
     "name":             "adc2",
-    "shortDescription": "ADC output 2",
+    "shortDescription": "Batt",
     "type":             "double",
     "decimalPlaces":    2,
     "units":            "v"
 },
 {
     "name":             "adc3",
-    "shortDescription": "ADC output 3",
+    "shortDescription": "Rudder",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "v"
+    "units":            "deg"
 },
 {
     "name":             "adc4",
-    "shortDescription": "ADC output 4",
+    "shortDescription": "Tacho",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "v"
+    "units":            "rpm"
 },
 {
     "name":             "adc5",
-    "shortDescription": "ADC output 5",
+    "shortDescription": "Fuel",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "v"
+    "units":            "litre"
 },
 {
     "name":             "adc6",

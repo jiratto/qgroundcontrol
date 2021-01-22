@@ -49,6 +49,13 @@
     "units":            "m/s"
 },
 {
+    "name":             "vesselSpeed",
+    "shortDescription": "Vessel Speed",
+    "type":             "double",
+    "decimalPlaces":    1,
+    "units":            "kn"
+},
+{
     "name":             "airSpeed",
     "shortDescription": "Air Speed",
     "type":             "double",
