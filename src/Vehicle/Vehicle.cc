@@ -4409,8 +4409,8 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
 // adc3:[213,644] -> rudder:[-27,27.8] deg
 #define ADC3_BASE_MIN       213
 #define ADC3_BASE_MAX       644
-#define RUDDER_LIMIT_MIN    -27.0
-#define RUDDER_LIMIT_MAX    27.8
+#define RUDDER_LIMIT_MIN    27.8
+#define RUDDER_LIMIT_MAX    -27.8
 
 // adc4:[3781,3300] -> tacho:[700,4000] rpm
 #define ADC4_BASE_MIN       3781
