@@ -4409,6 +4409,7 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
 // adc3:[213,644] -> rudder:[-27,27.8] deg
 #define ADC3_BASE_MIN       213
 #define ADC3_BASE_MAX       644
+#define ADC3_CENTER         460
 #define RUDDER_LIMIT_MIN    27.8
 #define RUDDER_LIMIT_MAX    -27.8
 
@@ -4446,15 +4447,17 @@ void Vehicle::_handleRtnasvADC(const mavlink_message_t& message)
     }
 
     int adc2 = o.adc2;
-    double batt_value = -1.0;
-    if ((adc2 >= ADC2_BASE_MIN) && (adc2 <= ADC2_BASE_MAX)) {
-        batt_value = scale(adc2, ADC2_BASE_MIN, ADC2_BASE_MAX, BATT_LIMIT_MIN, BATT_LIMIT_MAX);
-    }
+    double batt_value = 0.0;
+    batt_value = scale(adc2, ADC2_BASE_MIN, ADC2_BASE_MAX, BATT_LIMIT_MIN, BATT_LIMIT_MAX);
 
     int adc3 = o.adc3;
-    double rudder_value = -9999.9;
-    if ((adc3 >= ADC3_BASE_MIN) && (adc3 <= ADC3_BASE_MAX)) {
-        rudder_value = scale(adc3, ADC3_BASE_MIN, ADC3_BASE_MAX, RUDDER_LIMIT_MIN, RUDDER_LIMIT_MAX);
+    double rudder_value = 0.0;
+    if (adc3 == ADC3_CENTER) {
+        rudder_value = 0.0;
+    } else if (adc3 < ADC3_CENTER) {
+        rudder_value = scale(adc3, ADC3_BASE_MIN, ADC3_CENTER, RUDDER_LIMIT_MIN, 0.0);
+    } else if (adc3 > ADC3_CENTER) {
+        rudder_value = scale(adc3, ADC3_CENTER, ADC3_BASE_MAX, 0.0, RUDDER_LIMIT_MAX);
     }
 
     int adc4 = o.adc4;
