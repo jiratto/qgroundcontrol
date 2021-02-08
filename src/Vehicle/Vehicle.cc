@@ -4408,9 +4408,9 @@ void Vehicle::_handleAisVessel(const mavlink_message_t& message)
 
 // adc5:[0,2185] -> fuel:[0,20] litre
 #define ADC5_BASE_MIN       0
-#define ADC5_BASE_MAX       2185
+#define ADC5_BASE_MAX       2000
 #define FUEL_LIMIT_MIN      0
-#define FUEL_LIMIT_MAX      20
+#define FUEL_LIMIT_MAX      8
 
 // linear scale
 static double scale(double valueIn,

@@ -91,13 +91,6 @@
     "units":            "deg"
 },
 {
-    "name":             "distanceToGCS",
-    "shortDescription": "Distance to GCS",
-    "type":             "double",
-    "decimalPlaces":    1,
-    "units":            "mile"
-},
-{
     "name":             "headingToNextWP",
     "shortDescription": "Next WP Heading",
     "type":             "double",

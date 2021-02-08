@@ -56,13 +56,6 @@
     "units":            "m"
 },
 {
-    "name":             "waterTemperature",
-    "shortDescription": "Water Temperature",
-    "type":             "double",
-    "decimalPlaces":    2,
-    "units":            "C"
-},
-{
     "name":             "waterSpeed",
     "shortDescription": "Water Speed",
     "type":             "double",
