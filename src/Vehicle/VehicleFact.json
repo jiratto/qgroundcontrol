@@ -42,25 +42,11 @@
     "units":            "deg/s"
 },
 {
-    "name":             "groundSpeed",
-    "shortDescription": "Ground Speed",
-    "type":             "double",
-    "decimalPlaces":    1,
-    "units":            "m/s"
-},
-{
     "name":             "vesselSpeed",
     "shortDescription": "Vessel Speed",
     "type":             "double",
     "decimalPlaces":    1,
     "units":            "kn"
-},
-{
-    "name":             "airSpeed",
-    "shortDescription": "Air Speed",
-    "type":             "double",
-    "decimalPlaces":    1,
-    "units":            "m/s"
 },
 {
     "name":             "climbRate",
@@ -88,14 +74,14 @@
     "shortDescription": "Flight Distance",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "m"
+    "units":            "mile"
 },
 {
     "name":             "distanceToHome",
     "shortDescription": "Distance to Home",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "m"
+    "units":            "mile"
 },
 {
     "name":             "headingToHome",
@@ -109,7 +95,7 @@
     "shortDescription": "Distance to GCS",
     "type":             "double",
     "decimalPlaces":    1,
-    "units":            "m"
+    "units":            "mile"
 },
 {
     "name":             "headingToNextWP",

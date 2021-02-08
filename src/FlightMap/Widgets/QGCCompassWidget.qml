@@ -36,7 +36,7 @@ Item {
     property int  _fontSize:        ScreenTools.defaultFontPointSize * _sizeRatio
     property real _heading:         vehicle ? vehicle.heading.rawValue : 0
     property real _headingToHome:   vehicle ? vehicle.headingToHome.rawValue : 0
-    property real _groundSpeed:     vehicle ? vehicle.groundSpeed.rawValue : 0
+    property real _groundSpeed:     vehicle ? (vehicle.vesselSpeed.rawValue * 0.514) : 0
     property real _headingToNextWP: vehicle ? vehicle.headingToNextWP.rawValue : 0
     property real _courseOverGround:activeVehicle ? activeVehicle.gps.courseOverGround.rawValue : 0
 

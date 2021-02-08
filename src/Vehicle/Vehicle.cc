@@ -68,8 +68,6 @@ const char* Vehicle::_headingFactName =             "heading";
 const char* Vehicle::_rollRateFactName =             "rollRate";
 const char* Vehicle::_pitchRateFactName =           "pitchRate";
 const char* Vehicle::_yawRateFactName =             "yawRate";
-const char* Vehicle::_airSpeedFactName =            "airSpeed";
-const char* Vehicle::_groundSpeedFactName =         "groundSpeed";
 const char* Vehicle::_vesselSpeedFactName =         "vesselSpeed";
 const char* Vehicle::_climbRateFactName =           "climbRate";
 const char* Vehicle::_altitudeRelativeFactName =    "altitudeRelative";
@@ -95,7 +93,6 @@ const char* Vehicle::_estimatorStatusFactGroupName =    "estimatorStatus";
 
 // rtnasv
 const char* Vehicle::_weatherFactGroupName =            "weatherStation";
-const char* Vehicle::_waterSpeedFactGroupName =         "waterSpeed";
 const char* Vehicle::_adcFactGroupName =                "adc";
 
 // Standard connected vehicle
@@ -202,9 +199,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _rollRateFact         (0, _rollRateFactName,          FactMetaData::valueTypeDouble)
     , _pitchRateFact        (0, _pitchRateFactName,         FactMetaData::valueTypeDouble)
     , _yawRateFact          (0, _yawRateFactName,           FactMetaData::valueTypeDouble)
-    , _groundSpeedFact      (0, _groundSpeedFactName,       FactMetaData::valueTypeDouble)
     , _vesselSpeedFact      (0, _vesselSpeedFactName,       FactMetaData::valueTypeDouble)
-    , _airSpeedFact         (0, _airSpeedFactName,          FactMetaData::valueTypeDouble)
     , _climbRateFact        (0, _climbRateFactName,         FactMetaData::valueTypeDouble)
     , _altitudeRelativeFact (0, _altitudeRelativeFactName,  FactMetaData::valueTypeDouble)
     , _altitudeAMSLFact     (0, _altitudeAMSLFactName,      FactMetaData::valueTypeDouble)
@@ -226,7 +221,6 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _distanceSensorFactGroup(this)
     , _estimatorStatusFactGroup(this)
     , _weatherStationFactGroup(this)
-    , _waterSpeedFactGroup(this)
     , _adcFactGroup(this)
 {
     connect(_joystickManager, &JoystickManager::activeJoystickChanged, this, &Vehicle::_loadSettings);
@@ -406,9 +400,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _rollRateFact         (0, _rollRateFactName,          FactMetaData::valueTypeDouble)
     , _pitchRateFact        (0, _pitchRateFactName,         FactMetaData::valueTypeDouble)
     , _yawRateFact          (0, _yawRateFactName,           FactMetaData::valueTypeDouble)
-    , _groundSpeedFact      (0, _groundSpeedFactName,       FactMetaData::valueTypeDouble)
     , _vesselSpeedFact      (0, _vesselSpeedFactName,       FactMetaData::valueTypeDouble)
-    , _airSpeedFact         (0, _airSpeedFactName,          FactMetaData::valueTypeDouble)
     , _climbRateFact        (0, _climbRateFactName,         FactMetaData::valueTypeDouble)
     , _altitudeRelativeFact (0, _altitudeRelativeFactName,  FactMetaData::valueTypeDouble)
     , _altitudeAMSLFact     (0, _altitudeAMSLFactName,      FactMetaData::valueTypeDouble)
@@ -428,7 +420,6 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _clockFactGroup(this)
     , _distanceSensorFactGroup(this)
     , _weatherStationFactGroup(this)
-    , _waterSpeedFactGroup(this)
     , _adcFactGroup(this)
 {
     _commonInit();
@@ -490,9 +481,7 @@ void Vehicle::_commonInit()
     _addFact(&_rollRateFact,            _rollRateFactName);
     _addFact(&_pitchRateFact,           _pitchRateFactName);
     _addFact(&_yawRateFact,             _yawRateFactName);
-    _addFact(&_groundSpeedFact,         _groundSpeedFactName);
-    _addFact(&_vesselSpeedFact,     _vesselSpeedFactName);
-    _addFact(&_airSpeedFact,            _airSpeedFactName);
+    _addFact(&_vesselSpeedFact,         _vesselSpeedFactName);
     _addFact(&_climbRateFact,           _climbRateFactName);
     _addFact(&_altitudeRelativeFact,    _altitudeRelativeFactName);
     _addFact(&_altitudeAMSLFact,        _altitudeAMSLFactName);
@@ -512,7 +501,6 @@ void Vehicle::_commonInit()
     _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
 //    _addFactGroup(&_windFactGroup,              _windFactGroupName);
     _addFactGroup(&_weatherStationFactGroup,    _weatherFactGroupName);
-    _addFactGroup(&_waterSpeedFactGroup,        _waterSpeedFactGroupName);
     _addFactGroup(&_adcFactGroup,               _adcFactGroupName);
 //    _addFactGroup(&_vibrationFactGroup,         _vibrationFactGroupName);
 //    _addFactGroup(&_temperatureFactGroup,       _temperatureFactGroupName);
@@ -1026,8 +1014,6 @@ void Vehicle::_handleVfrHud(mavlink_message_t& message)
     mavlink_vfr_hud_t vfrHud;
     mavlink_msg_vfr_hud_decode(&message, &vfrHud);
 
-    _airSpeedFact.setRawValue(qIsNaN(vfrHud.airspeed) ? 0 : vfrHud.airspeed);
-    _groundSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : vfrHud.groundspeed);
     _vesselSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : static_cast<double>(vfrHud.groundspeed) * 1.94384);
     _climbRateFact.setRawValue(qIsNaN(vfrHud.climb) ? 0 : vfrHud.climb);
     _throttlePctFact.setRawValue(static_cast<int16_t>(vfrHud.throttle));
@@ -3992,8 +3978,10 @@ void Vehicle::_handleADSBVehicle(const mavlink_message_t& message)
 void Vehicle::_updateDistanceHeadingToHome()
 {
     if (coordinate().isValid() && homePosition().isValid()) {
-        _distanceToHomeFact.setRawValue(coordinate().distanceTo(homePosition()));
-        if (_distanceToHomeFact.rawValue().toDouble() > 1.0) {
+        float distanceToHomeMeter = coordinate().distanceTo(homePosition());
+        float distanceToHomeMile = 0.000539956f * distanceToHomeMeter;
+        _distanceToHomeFact.setRawValue(distanceToHomeMile);
+        if (distanceToHomeMeter > 1.0) {
             _headingToHomeFact.setRawValue(coordinate().azimuthTo(homePosition()));
         } else {
             _headingToHomeFact.setRawValue(qQNaN());
@@ -4025,7 +4013,8 @@ void Vehicle::_updateDistanceToGCS()
 {
     QGeoCoordinate gcsPosition = _toolbox->qgcPositionManager()->gcsPosition();
     if (coordinate().isValid() && gcsPosition.isValid()) {
-        _distanceToGCSFact.setRawValue(coordinate().distanceTo(gcsPosition));
+        double distToGCSMeter = coordinate().distanceTo(gcsPosition);
+        _distanceToGCSFact.setRawValue(distToGCSMeter * 0.0005399568);
     } else {
         _distanceToGCSFact.setRawValue(qQNaN());
     }
@@ -4371,8 +4360,6 @@ void Vehicle::_handleWaterSpeed(const mavlink_message_t& message)
 {
     mavlink_water_speed_t o;
     mavlink_msg_water_speed_decode(&message, &o);
-    _waterSpeedFactGroup.water_speed_true()->setRawValue(o.water_speed_true);
-    _waterSpeedFactGroup.water_speed_relative()->setRawValue(o.water_speed_relative);
 }
 
 void Vehicle::_handleAisVessel(const mavlink_message_t& message)
@@ -4517,7 +4504,8 @@ void Vehicle::_handleRtnasvGPIO(const mavlink_message_t& message)
 
 void Vehicle::updateFlightDistance(double distance)
 {
-    _flightDistanceFact.setRawValue(_flightDistanceFact.rawValue().toDouble() + distance);
+    double distance_mile = distance * 0.0005399568;
+    _flightDistanceFact.setRawValue(_flightDistanceFact.rawValue().toDouble() + distance_mile);
 }
 
 //-----------------------------------------------------------------------------
@@ -4639,21 +4627,6 @@ VehicleWeatherStationFactGroup::VehicleWeatherStationFactGroup(QObject* parent)
     _waterSpeedFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesTotalFact.setRawValue             (std::numeric_limits<float>::quiet_NaN());
     _milesSinceResetFact.setRawValue        (std::numeric_limits<float>::quiet_NaN());
-}
-
-const char* VehicleWaterSpeedFactGroup::_waterSpeedTrueFactName        = "waterSpeedTrue";
-const char* VehicleWaterSpeedFactGroup::_waterSpeedRelativeFactName    = "waterSpeedRelative";
-
-VehicleWaterSpeedFactGroup::VehicleWaterSpeedFactGroup(QObject* parent)
-    : FactGroup(1000, ":/json/Vehicle/WaterSpeedFact.json", parent)
-    , _waterSpeedTrueFact            (0, _waterSpeedTrueFactName,         FactMetaData::valueTypeDouble)
-    , _waterSpeedRelativeFact        (0, _waterSpeedRelativeFactName,     FactMetaData::valueTypeDouble)
-{
-    _addFact(&_waterSpeedTrueFact,       _waterSpeedTrueFactName);
-    _addFact(&_waterSpeedRelativeFact,   _waterSpeedRelativeFactName);
-
-    _waterSpeedTrueFact.setRawValue          (std::numeric_limits<float>::quiet_NaN());
-    _waterSpeedRelativeFact.setRawValue      (std::numeric_limits<float>::quiet_NaN());
 }
 
 const char* VehicleAdcFactGroup::_adc1FactName = "adc1";

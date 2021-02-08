@@ -60,7 +60,7 @@
     "shortDescription": "Water Temperature",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "m"
+    "units":            "C"
 },
 {
     "name":             "waterSpeed",

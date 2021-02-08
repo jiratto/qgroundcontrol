@@ -261,27 +261,6 @@ private:
     Fact        _milesSinceResetFact;
 };
 
-class VehicleWaterSpeedFactGroup : public FactGroup
-{
-    Q_OBJECT
-
-public:
-    VehicleWaterSpeedFactGroup(QObject* parent = nullptr);
-
-    Q_PROPERTY(Fact* water_speed_true       READ water_speed_true        CONSTANT)
-    Q_PROPERTY(Fact* water_speed_relative   READ water_speed_relative    CONSTANT)
-
-    Fact* water_speed_true       () { return &_waterSpeedTrueFact; }
-    Fact* water_speed_relative   () { return &_waterSpeedRelativeFact; }
-
-    static const char* _waterSpeedTrueFactName;
-    static const char* _waterSpeedRelativeFactName;
-
-private:
-    Fact        _waterSpeedTrueFact;
-    Fact        _waterSpeedRelativeFact;
-};
-
 class VehicleAdcFactGroup : public FactGroup
 {
     Q_OBJECT
@@ -796,8 +775,6 @@ public:
     Q_PROPERTY(Fact* rollRate           READ rollRate           CONSTANT)
     Q_PROPERTY(Fact* pitchRate          READ pitchRate          CONSTANT)
     Q_PROPERTY(Fact* yawRate            READ yawRate            CONSTANT)
-    Q_PROPERTY(Fact* groundSpeed        READ groundSpeed        CONSTANT)
-    Q_PROPERTY(Fact* airSpeed           READ airSpeed           CONSTANT)
     Q_PROPERTY(Fact* climbRate          READ climbRate          CONSTANT)
     Q_PROPERTY(Fact* altitudeRelative   READ altitudeRelative   CONSTANT)
     Q_PROPERTY(Fact* altitudeAMSL       READ altitudeAMSL       CONSTANT)
@@ -1114,8 +1091,6 @@ public:
     Fact* rollRate                          () { return &_rollRateFact; }
     Fact* pitchRate                         () { return &_pitchRateFact; }
     Fact* yawRate                           () { return &_yawRateFact; }
-    Fact* airSpeed                          () { return &_airSpeedFact; }
-    Fact* groundSpeed                       () { return &_groundSpeedFact; }
     Fact* vesselSpeed                       () { return &_vesselSpeedFact; }
     Fact* climbRate                         () { return &_climbRateFact; }
     Fact* altitudeRelative                  () { return &_altitudeRelativeFact; }
@@ -1749,7 +1724,6 @@ private:
 
     // rtnasv
     VehicleWeatherStationFactGroup  _weatherStationFactGroup;
-    VehicleWaterSpeedFactGroup      _waterSpeedFactGroup;
     VehicleAdcFactGroup             _adcFactGroup;
 
     static const char* _rollFactName;
@@ -1760,7 +1734,6 @@ private:
     static const char* _yawRateFactName;
     static const char* _groundSpeedFactName;
     static const char* _vesselSpeedFactName;
-    static const char* _airSpeedFactName;
     static const char* _climbRateFactName;
     static const char* _altitudeRelativeFactName;
     static const char* _altitudeAMSLFactName;
@@ -1784,7 +1757,6 @@ private:
     static const char* _estimatorStatusFactGroupName;
     // rtnasv
     static const char* _weatherFactGroupName;
-    static const char* _waterSpeedFactGroupName;
     static const char* _adcFactGroupName;
 
     static const int _vehicleUIUpdateRateMSecs = 100;
