@@ -497,8 +497,8 @@ void Vehicle::_commonInit()
     _addFact(&_hobbsFact,               _hobbsFactName);
 
     _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
-    _addFactGroup(&_battery1FactGroup,          _battery1FactGroupName);
-    _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
+//    _addFactGroup(&_battery1FactGroup,          _battery1FactGroupName);
+//    _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
 //    _addFactGroup(&_windFactGroup,              _windFactGroupName);
     _addFactGroup(&_weatherStationFactGroup,    _weatherFactGroupName);
     _addFactGroup(&_adcFactGroup,               _adcFactGroupName);

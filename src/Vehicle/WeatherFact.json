@@ -28,25 +28,11 @@
     "units":            "kn"
 },
 {
-    "name":             "airPressure",
-    "shortDescription": "Air Pressure",
-    "type":             "double",
-    "decimalPlaces":    1,
-    "units":            "bars"
-},
-{
     "name":             "airTemperature",
     "shortDescription": "Air Temperature",
     "type":             "double",
     "decimalPlaces":    1,
     "units":            "degC"
-},
-{
-    "name":             "airHumidity",
-    "shortDescription": "Air Humidity",
-    "type":             "double",
-    "decimalPlaces":    1,
-    "units":            "%"
 },
 {
     "name":             "waterDepth",
