@@ -111,7 +111,7 @@
 {
     "name":             "throttlePct",
     "shortDescription": "Throttle %",
-    "type":             "uint16",
+    "type":             "int16",
     "units":            "%"
 }
 ]

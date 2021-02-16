@@ -210,7 +210,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _headingToHomeFact    (0, _headingToHomeFactName,     FactMetaData::valueTypeDouble)
     , _distanceToGCSFact    (0, _distanceToGCSFactName,     FactMetaData::valueTypeDouble)
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
-    , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
+    , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeInt16)
     , _gpsFactGroup(this)
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
@@ -411,7 +411,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _headingToHomeFact    (0, _headingToHomeFactName,     FactMetaData::valueTypeDouble)
     , _distanceToGCSFact    (0, _distanceToGCSFactName,     FactMetaData::valueTypeDouble)
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
-    , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
+    , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeInt16)
     , _gpsFactGroup(this)
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
@@ -1016,7 +1016,11 @@ void Vehicle::_handleVfrHud(mavlink_message_t& message)
 
     _vesselSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : static_cast<double>(vfrHud.groundspeed) * 1.94384);
     _climbRateFact.setRawValue(qIsNaN(vfrHud.climb) ? 0 : vfrHud.climb);
-    _throttlePctFact.setRawValue(static_cast<int16_t>(vfrHud.throttle));
+    if (vfrHud.throttle > 32767) {
+        _throttlePctFact.setRawValue(static_cast<int16_t>(vfrHud.throttle - 65536));
+    } else {
+        _throttlePctFact.setRawValue(static_cast<int16_t>(vfrHud.throttle));
+    }
 }
 
 void Vehicle::_handleEstimatorStatus(mavlink_message_t& message)
@@ -4463,7 +4467,7 @@ void Vehicle::_handleRtnasvADC(const mavlink_message_t& message)
     _adcFactGroup.adc2()->setRawValue(batt_value);
     _adcFactGroup.adc3()->setRawValue(rudder_value);
     _adcFactGroup.adc4()->setRawValue(tacho_value);
-    _adcFactGroup.adc5()->setRawValue(fuel_value);
+    _adcFactGroup.adc5()->setRawValue(round(fuel_value));
     _adcFactGroup.adc6()->setRawValue(o.adc6 * 0.01f);
     _adcFactGroup.adc7()->setRawValue(o.adc7 * 0.01f);
     _adcFactGroup.adc8()->setRawValue(o.adc8 * 0.01f);

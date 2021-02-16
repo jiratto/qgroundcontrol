@@ -32,7 +32,7 @@
     "shortDescription": "Fuel",
     "type":             "double",
     "decimalPlaces":    2,
-    "units":            "litre"
+    "units":            "level"
 },
 {
     "name":             "adc6",
